@@ -1,3 +1,8 @@
+# Internal: Install logrotate and configure it to read from /etc/logrotate.d
+#
+# Examples
+#
+#   include logrotate::base
 class logrotate::base {
   package { 'logrotate':
     ensure => latest,
