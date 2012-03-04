@@ -290,7 +290,7 @@ define logrotate::rule(
     'undef': {}
     /^\d+[kMG]?$/: {}
     default: {
-      fail("Logrotate::Rule[${name}]: minsize must match /\d+[kMG]?/")
+      fail("Logrotate::Rule[${name}]: minsize must match /\\d+[kMG]?/")
     }
   }
 
@@ -306,7 +306,7 @@ define logrotate::rule(
     'undef': {}
     /^\d+[kMG]?$/: {}
     default: {
-      fail("Logrotate::Rule[${name}]: size must match /\d+[kMG]?/")
+      fail("Logrotate::Rule[${name}]: size must match /\\d+[kMG]?/")
     }
   }
 
