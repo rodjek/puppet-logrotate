@@ -10,6 +10,8 @@ exceptions:
    e.g. `copy` == `copy => true`, `nocopy` == `copy => false`.
  * `create` and it's three optional arguments have been split into seperate
    parameters documented below.
+ * Instead of 'daily', 'weekly', 'monthly' or 'yearly', there is a
+   `rotate_every` parameter (see documentation below).
 
 ## logrotate::rule
 
@@ -85,9 +87,10 @@ lastaction      - A command String that should be execute by /bin/sh once
                   rotated (optional).
 rotate          - The Integer number of rotated log files to keep on disk
                   (optional).
-schedule        - How often the log files should be rotated as a String.
-                  Valid values are 'daily', 'weekly', 'monthly' and 'yearly'
-                  (optional).
+rotate_every    - How often the log files should be rotated as a String.
+                  Valid values are 'day', 'week', 'month' and 'year'
+                  (optional).  Please note, older versions of logrotate do not
+                  support yearly log rotation.
 size            - The String size a log file has to reach before it will be
                   rotated (optional).  The default units are bytes, append k,
                   M or G for kilobytes, megabytes or gigabytes respectively.
@@ -110,10 +113,10 @@ Further details about these options can be found by reading `man 8 logrotate`.
 
 ```
 logrotate::rule { 'messages':
-  path       => '/var/log/messages',
-  rotate     => 5,
-  schedule   => 'weekly',
-  postrotate => '/usr/bin/killall -HUP syslogd',
+  path         => '/var/log/messages',
+  rotate       => 5,
+  rotate_every => 'week',
+  postrotate   => '/usr/bin/killall -HUP syslogd',
 }
 
 logrotate::rule { 'apache':
