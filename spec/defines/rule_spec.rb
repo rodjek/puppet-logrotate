@@ -727,10 +727,10 @@ describe 'logrotate::rule' do
     end
 
     ###########################################################################
-    # SCHEDULE
-    context 'and schedule => daily' do
+    # ROTATE_EVERY
+    context 'and rotate_every => day' do
       let(:params) {
-        {:path => '/var/log/foo.log', :schedule => 'daily'}
+        {:path => '/var/log/foo.log', :rotate_every => 'day'}
       }
 
       it do
@@ -739,9 +739,9 @@ describe 'logrotate::rule' do
       end
     end
 
-    context 'and schedule => weekly' do
+    context 'and rotate_every => week' do
       let(:params) {
-        {:path => '/var/log/foo.log', :schedule => 'weekly'}
+        {:path => '/var/log/foo.log', :rotate_every => 'week'}
       }
 
       it do
@@ -750,9 +750,9 @@ describe 'logrotate::rule' do
       end
     end
 
-    context 'and schedule => monthly' do
+    context 'and rotate_every => month' do
       let(:params) {
-        {:path => '/var/log/foo.log', :schedule => 'monthly'}
+        {:path => '/var/log/foo.log', :rotate_every => 'month'}
       }
 
       it do
@@ -761,9 +761,9 @@ describe 'logrotate::rule' do
       end
     end
 
-    context 'and schedule => yearly' do
+    context 'and rotate_every => year' do
       let(:params) {
-        {:path => '/var/log/foo.log', :schedule => 'yearly'}
+        {:path => '/var/log/foo.log', :rotate_every => 'year'}
       }
 
       it do
@@ -772,15 +772,15 @@ describe 'logrotate::rule' do
       end
     end
 
-    context 'and schedule => foo' do
+    context 'and rotate_every => foo' do
       let(:params) {
-        {:path => '/var/log/foo.log', :schedule => 'foo'}
+        {:path => '/var/log/foo.log', :rotate_every => 'foo'}
       }
 
       it do
         expect {
           should contain_file('/etc/logrotate.d/test')
-        }.to raise_error(Puppet::Error, /invalid schedule/)
+        }.to raise_error(Puppet::Error, /invalid rotate_every value/)
       end
     end
 

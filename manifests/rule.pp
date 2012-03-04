@@ -67,8 +67,8 @@
 #                   rotated (optional).
 # rotate          - The Integer number of rotated log files to keep on disk
 #                   (optional).
-# schedule        - How often the log files should be rotated as a String.
-#                   Valid values are 'daily', 'weekly', 'monthly' and 'yearly'
+# rotate_every    - How often the log files should be rotated as a String.
+#                   Valid values are 'day', 'week', 'month' and 'year'
 #                   (optional).
 # size            - The String size a log file has to reach before it will be
 #                   rotated (optional).  The default units are bytes, append k,
@@ -92,7 +92,7 @@
 #     path         => '/var/log/messages',
 #     copytruncate => true,
 #     missingok    => true,
-#     schedule     => 'daily',
+#     rotate_every => 'day',
 #     rotate       => 7,
 #     compress     => true,
 #     ifempty      => true,
@@ -100,11 +100,11 @@
 #
 #   # Rotate /var/log/nginx/access_log weekly and keep 3 weeks of logs
 #   logrotate::rule { 'nginx_access_log':
-#     path       => '/var/log/nginx/access_log',
-#     missingok  => true,
-#     schedule   => 'weekly',
-#     rotate     => 3,
-#     postrotate => '/etc/init.d/nginx restart',
+#     path         => '/var/log/nginx/access_log',
+#     missingok    => true,
+#     rotate_every => 'week',
+#     rotate       => 3,
+#     postrotate   => '/etc/init.d/nginx restart',
 #   }
 define logrotate::rule(
                         $path            = 'undef',
@@ -136,7 +136,7 @@ define logrotate::rule(
                         $firstaction     = 'undef',
                         $lastaction      = 'undef',
                         $rotate          = 'undef',
-                        $schedule        = 'undef',
+                        $rotate_every    = 'undef',
                         $size            = 'undef',
                         $sharedscripts   = 'undef',
                         $shred           = 'undef',
@@ -270,11 +270,15 @@ define logrotate::rule(
     }
   }
 
-  case $schedule {
+  case $rotate_every {
     'undef': {}
-    'daily', 'weekly','monthly','yearly': {}
+    'day': { $_rotate_every = 'daily' }
+    'week': { $_rotate_every = 'weekly' }
+    'month': { $_rotate_every = 'monthly' }
+    'year': { $_rotate_every = 'yearly' }
+    'daily', 'weekly','monthly','yearly': { $_rotate_every = $rotate_every }
     default: {
-      fail("Logrotate::Rule[${name}]: invalid schedule")
+      fail("Logrotate::Rule[${name}]: invalid rotate_every value")
     }
   }
 

@@ -1,8 +1,6 @@
 <%
   opts = []
 
-  opts << eval('schedule') unless eval('schedule') == 'undef'
-
   if has_variable?('_create')
     if _create == 'create'
       opts << [_create, create_mode, create_owner, create_group].reject { |r|
@@ -16,7 +14,7 @@
   [
     '_compress', '_copy', '_copytruncate', '_delaycompress', '_dateext',
     '_mail', '_missingok', '_olddir', '_sharedscripts', '_ifempty', '_maillast',
-    '_mailfirst', '_shred'
+    '_mailfirst', '_shred', '_rotate_every'
   ].each do |bool|
     opts << eval(bool) if has_variable?(bool)
   end
