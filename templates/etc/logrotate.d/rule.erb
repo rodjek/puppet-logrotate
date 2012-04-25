@@ -1,6 +1,12 @@
 <%
   opts = []
 
+  if path.kind_of?(Array)
+    rpath = path.join(' ')
+  else
+    rpath = path
+  end
+
   if has_variable?('_create')
     if _create == 'create'
       opts << [_create, create_mode, create_owner, create_group].reject { |r|
@@ -28,7 +34,7 @@
     opts << "#{key} #{value}" if value != 'undef'
   end
 -%>
-<%= path %> {
+<%= rpath %> {
 <% opts.each do |opt| -%>
   <%= opt %>
 <% end -%>
