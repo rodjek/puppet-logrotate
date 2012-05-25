@@ -23,6 +23,15 @@ describe 'logrotate::rule' do
       }).with_content("/var/log/foo.log {\n}\n")
     end
 
+    context 'with an array path' do
+      let (:params) { {:path => ['/var/log/foo1.log','/var/log/foo2.log']} }
+        it do
+          should contain_file('/etc/logrotate.d/test').with_content(
+            "/var/log/foo1.log /var/log/foo2.log {\n}\n"
+          )
+        end
+    end
+
     ###########################################################################
     # COMPRESS
     context 'and compress => true' do
