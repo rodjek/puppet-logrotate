@@ -22,7 +22,8 @@
     '_mail', '_missingok', '_olddir', '_sharedscripts', '_ifempty', '_maillast',
     '_mailfirst', '_shred', '_rotate_every'
   ].each do |bool|
-    opts << eval(bool) if has_variable?(bool)
+    global_bool = '::'+bool
+    opts << eval(global_bool) if has_variable?(global_bool)
   end
 
   [
