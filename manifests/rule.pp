@@ -148,7 +148,7 @@ define logrotate::rule(
   #############################################################################
   # SANITY CHECK VALUES
 
-  if $name !~ /^[a-zA-Z0-9_-]+$/ {
+  if $name !~ /^[a-zA-Z0-9\._-]+$/ {
     fail("Logrotate::Rule[${name}]: namevar must be alphanumeric")
   }
 
