@@ -1,19 +1,19 @@
 <%
   opts = []
 
-  if path.kind_of?(Array)
-    rpath = path.join(' ')
+  if @path.kind_of?(Array)
+    rpath = @path.join(' ')
   else
-    rpath = path
+    rpath = @path
   end
 
-  if has_variable?('_create')
-    if _create == 'create'
-      opts << [_create, create_mode, create_owner, create_group].reject { |r|
+  if scope.to_hash.has_key?('_create')
+    if @_create == 'create'
+      opts << [@_create, @create_mode, @create_owner, @create_group].reject { |r|
         r == 'undef'
       }.join(' ')
     else
-      opts << _create
+      opts << @_create
     end
   end
 
@@ -22,7 +22,7 @@
     '_mail', '_missingok', '_olddir', '_sharedscripts', '_ifempty', '_maillast',
     '_mailfirst', '_shred', '_rotate_every'
   ].each do |bool|
-    opts << eval(bool) if has_variable?(bool)
+    opts << scope.to_hash[bool] if scope.to_hash.has_key?(bool)
   end
 
   [
@@ -30,7 +30,7 @@
     'maxage', 'minsize', 'rotate', 'size', 'shredcycles', 'start',
     'uncompresscmd'
   ].each do |key|
-    value = eval(key)
+    value = scope.to_hash[key]
     opts << "#{key} #{value}" if value != 'undef'
   end
 -%>
@@ -38,24 +38,24 @@
 <% opts.each do |opt| -%>
   <%= opt %>
 <% end -%>
-<% if postrotate != 'undef' -%>
+<% if @postrotate != 'undef' -%>
   postrotate
-    <%= postrotate %>
+    <%= @postrotate %>
   endscript
 <% end -%>
-<% if prerotate != 'undef' -%>
+<% if @prerotate != 'undef' -%>
   prerotate
-    <%= prerotate %>
+    <%= @prerotate %>
   endscript
 <% end -%>
-<% if firstaction != 'undef' -%>
+<% if @firstaction != 'undef' -%>
   firstaction
-    <%= firstaction %>
+    <%= @firstaction %>
   endscript
 <% end -%>
-<% if lastaction != 'undef' -%>
+<% if @lastaction != 'undef' -%>
   lastaction
-    <%= lastaction %>
+    <%= @lastaction %>
   endscript
 <% end -%>
 }
