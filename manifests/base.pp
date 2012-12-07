@@ -32,6 +32,9 @@ class logrotate::base {
     'Debian','Ubuntu': {
       include logrotate::defaults::debian
     }
+    'RedHat','CentOS': {
+      include logrotate::defaults::redhat
+    }
     default: { }
   }
 }
