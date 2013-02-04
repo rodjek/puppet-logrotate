@@ -3,7 +3,7 @@
 # Examples
 #
 #   include logrotate::defaults::debian
-class logrotate::defaults::debian {
+class logrotate::defaults::utmpbtmp {
   Logrotate::Rule {
     missingok    => true,
     rotate_every => 'month',
