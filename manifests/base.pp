@@ -29,8 +29,8 @@ class logrotate::base {
   }
 
   case $::operatingsystem {
-    'Debian','Ubuntu': {
-      include logrotate::defaults::debian
+    'Debian','Ubuntu','centos','Amazom': {
+      include logrotate::defaults::utmpbtmp
     }
     default: { }
   }
