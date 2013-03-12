@@ -88,7 +88,7 @@ lastaction      - A command String that should be execute by /bin/sh once
 rotate          - The Integer number of rotated log files to keep on disk
                   (optional).
 rotate_every    - How often the log files should be rotated as a String.
-                  Valid values are 'day', 'week', 'month' and 'year'
+                  Valid values are 'hour', 'day', 'week', 'month' and 'year'
                   (optional).  Please note, older versions of logrotate do not
                   support yearly log rotation.
 size            - The String size a log file has to reach before it will be
@@ -126,5 +126,12 @@ logrotate::rule { 'apache':
   size          => '100k',
   sharedscripts => true,
   postrotate    => '/etc/init.d/httpd restart',
+}
+
+logrotate::rule { 'nginx':
+  path          => '/var/log/nginx/*.log',
+  rotate        => 36,
+  rotate_every  => 'hour',
+  size          => '1M',
 }
 ```
