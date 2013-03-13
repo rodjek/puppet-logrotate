@@ -1,2 +1,4 @@
 .bundle/
+vendor
+vendor/cache
 vendor/gems

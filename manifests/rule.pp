@@ -68,7 +68,7 @@
 # rotate          - The Integer number of rotated log files to keep on disk
 #                   (optional).
 # rotate_every    - How often the log files should be rotated as a String.
-#                   Valid values are 'day', 'week', 'month' and 'year'
+#                   Valid values are 'hour', 'day', 'week', 'month' and 'year'
 #                   (optional).
 # size            - The String size a log file has to reach before it will be
 #                   rotated (optional).  The default units are bytes, append k,
@@ -148,7 +148,7 @@ define logrotate::rule(
   #############################################################################
   # SANITY CHECK VALUES
 
-  if $name !~ /^[a-zA-Z0-9\._-]+$/ {
+  if $name !~ /^[\/a-zA-Z0-9\._-]+$/ {
     fail("Logrotate::Rule[${name}]: namevar must be alphanumeric")
   }
 
@@ -272,6 +272,7 @@ define logrotate::rule(
 
   case $rotate_every {
     'undef': {}
+    'hour', 'hourly': { include logrotate::hourly }
     'day': { $_rotate_every = 'daily' }
     'week': { $_rotate_every = 'weekly' }
     'month': { $_rotate_every = 'monthly' }
@@ -371,7 +372,15 @@ define logrotate::rule(
 
   include logrotate::base
 
-  file { "/etc/logrotate.d/${name}":
+  case $rotate_every {
+    'hour','hourly': {
+      include logrotate::params
+      $realname = "${logrotate::params::hourly_path}/${name}"
+    }
+    default: { $realname = "/etc/logrotate.d/${name}" }
+  }
+
+  file { $realname:
     ensure  => $ensure,
     owner   => 'root',
     group   => 'root',

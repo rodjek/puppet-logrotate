@@ -1,9 +1,9 @@
-# Internal: Manage the default debian logrotate rules.
+# Internal: Manage the default redhat logrotate rules.
 #
 # Examples
 #
-#   include logrotate::defaults::debian
-class logrotate::defaults::debian {
+#   include logrotate::defaults::redhat
+class logrotate::defaults::redhat {
   Logrotate::Rule {
     missingok    => true,
     rotate_every => 'month',
