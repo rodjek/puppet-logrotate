@@ -737,6 +737,15 @@ describe 'logrotate::rule' do
 
     ###########################################################################
     # ROTATE_EVERY
+    context 'and rotate_every => hour' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :rotate_every => 'hour'}
+      }
+
+      it { should include_class('logrotate::hourly') }
+      it { should contain_file('/etc/logrotate.d/hourly/test') }
+    end
+
     context 'and rotate_every => day' do
       let(:params) {
         {:path => '/var/log/foo.log', :rotate_every => 'day'}
