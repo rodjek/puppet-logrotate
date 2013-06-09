@@ -1,5 +1,5 @@
 name 'rodjek-logrotate'
-version '1.0.2'
+version '1.1.0'
 source 'https://github.com/rodjek/puppet-logrotate'
 license 'MIT'
 summary 'Logrotate module'
