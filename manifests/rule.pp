@@ -272,6 +272,7 @@ define logrotate::rule(
 
   case $rotate_every {
     'undef': {}
+    'hour', 'hourly': {}
     'day': { $_rotate_every = 'daily' }
     'week': { $_rotate_every = 'weekly' }
     'month': { $_rotate_every = 'monthly' }
@@ -371,7 +372,17 @@ define logrotate::rule(
 
   include logrotate::base
 
-  file { "/etc/logrotate.d/${name}":
+  case $rotate_every {
+    'hour', 'hourly': {
+      include logrotate::hourly
+      $rule_path = "/etc/logrotate.d/hourly/${name}"
+    }
+    default: {
+      $rule_path = "/etc/logrotate.d/${name}"
+    }
+  }
+
+  file { $rule_path:
     ensure  => $ensure,
     owner   => 'root',
     group   => 'root',
