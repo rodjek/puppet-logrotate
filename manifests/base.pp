@@ -1,11 +1,22 @@
 # Internal: Install logrotate and configure it to read from /etc/logrotate.d
 #
+# see logrotate::rule for description of options.
+#
 # Examples
 #
 #   include logrotate::base
-class logrotate::base {
+class logrotate::base (
+    $ensure = 'latest'
+) {
+
+  case $ensure {
+    'latest': { $_ensure = 'latest' }
+    false,'absent': { $_ensure = 'absent' }
+    default: { $_ensure = 'presest' }
+  }
+
   package { 'logrotate':
-    ensure => latest,
+    ensure => $_ensure,
   }
 
   File {
@@ -14,11 +25,11 @@ class logrotate::base {
     require => Package['logrotate'],
   }
 
+  if !defined( Logrotate::Conf['/etc/logrotate.conf'] ) {
+    logrotate::conf {'/etc/logrotate.conf': }
+  }
+
   file {
-    '/etc/logrotate.conf':
-      ensure  => file,
-      mode    => '0444',
-      source  => 'puppet:///modules/logrotate/etc/logrotate.conf';
     '/etc/logrotate.d':
       ensure  => directory,
       mode    => '0755';
