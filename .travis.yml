@@ -7,7 +7,6 @@ notifications:
   email:
     - tim@github.com
 env:
-  - PUPPET_VERSION=2.6.18
   - PUPPET_VERSION=2.7.24
   - PUPPET_VERSION=3.0.2
   - PUPPET_VERSION=3.1.1
