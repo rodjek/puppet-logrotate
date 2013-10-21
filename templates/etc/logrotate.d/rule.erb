@@ -17,6 +17,16 @@
     end
   end
 
+  if scope.to_hash.has_key?('_su')
+    if @_su == 'su'
+      opts << [@_su, @su_owner, @su_group].reject { |r|
+        r == 'undef'
+      }.join(' ')
+    else
+      opts << @_su
+    end
+  end
+
   [
     '_compress', '_copy', '_copytruncate', '_delaycompress', '_dateext',
     '_mail', '_missingok', '_olddir', '_sharedscripts', '_ifempty', '_maillast',
