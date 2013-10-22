@@ -20,14 +20,14 @@ describe 'logrotate::rule' do
         'group'   => 'root',
         'ensure'  => 'present',
         'mode'    => '0444',
-      }).with_content("/var/log/foo.log {\n}\n")
+      }).with_content(%r|^/var/log/foo\.log {\n}\n|)
     end
 
     context 'with an array path' do
       let (:params) { {:path => ['/var/log/foo1.log','/var/log/foo2.log']} }
         it do
           should contain_file('/etc/logrotate.d/test').with_content(
-            "/var/log/foo1.log /var/log/foo2.log {\n}\n"
+            %r|/var/log/foo1\.log /var/log/foo2\.log {\n}\n|
           )
         end
     end
