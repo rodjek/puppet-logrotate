@@ -82,9 +82,9 @@
 #                   before unlinking them (optional).
 # start           - The Integer number to be used as the base for the extensions
 #                   appended to the rotated log files (optional).
-# su              - A Boolean specifying whether logrotate should rotate under a
-#                   specific user and group instead of the default (optional).
-#                   First available in logrotate 3.8.0.
+# su              - A Boolean specifying whether logrotate should rotate under
+#                   the specific su_owner and su_group instead of the default.
+#                   First available in logrotate 3.8.0. (optional)
 # su_owner        - A username String that logrotate should use to rotate a
 #                   log file set instead of using the default if
 #                   su => true (optional).
@@ -387,14 +387,16 @@ define logrotate::rule(
     fail("Logrotate::Rule[${name}]: create_mode requires create")
   }
 
-  # su validation
-  if ($su_group != 'undef') and ($su_owner == 'undef') {
-    fail("Logrotate::Rule[${name}]: su_group requires su_owner")
+  # su requires at least su_owner
+  if ($su == true) and ($su_owner == 'undef') {
+    fail("Logrotate::Rule[${name}]: su requires su_owner and optional su_group")
   }
 
+  # su should be set to true if su_owner exists
   if ($su_owner != 'undef') and ($su != true) {
     fail("Logrotate::Rule[${name}]: su_owner requires su")
   }
+
   #############################################################################
   #
 

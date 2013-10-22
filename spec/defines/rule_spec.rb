@@ -1018,19 +1018,18 @@ describe 'logrotate::rule' do
         end
       end
 
-      context 'and su_group => admin' do
+      context 'and missing su_owner' do
         let(:params) {
           {
-            :path     => '/var/log/foo.log',
-            :su       => true,
-            :su_group => 'admin',
+            :path => '/var/log/foo.log',
+            :su   => true,
           }
         }
 
         it do
           expect {
             should contain_file('/etc/logrotate.d/test')
-          }.to raise_error(Puppet::Error, /su_group requires su_owner/)
+          }.to raise_error(Puppet::Error, /su requires su_owner/)
         end
       end
     end
