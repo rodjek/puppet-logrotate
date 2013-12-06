@@ -82,6 +82,15 @@
 #                   before unlinking them (optional).
 # start           - The Integer number to be used as the base for the extensions
 #                   appended to the rotated log files (optional).
+# su              - A Boolean specifying whether logrotate should rotate under a
+#                   specific user and group instead of the default (optional).
+#                   First available in logrotate 3.8.0.
+# su_owner        - A username String that logrotate should use to rotate a
+#                   log file set instead of using the default if
+#                   su => true (optional).
+# su_group        - A String group name that logrotate should use to rotate a
+#                   log file set instead of using the default if
+#                   su => true (optional).
 # uncompresscmd   - The String command to be used to uncompress log files
 #                   (optional).
 #
@@ -142,6 +151,9 @@ define logrotate::rule(
                         $shred           = 'undef',
                         $shredcycles     = 'undef',
                         $start           = 'undef',
+                        $su              = 'undef',
+                        $su_owner        = 'undef',
+                        $su_group        = 'undef',
                         $uncompresscmd   = 'undef'
                         ) {
 
@@ -331,6 +343,14 @@ define logrotate::rule(
     }
   }
 
+  case $su {
+    'undef',false: {}
+    true: { $_su = 'su' }
+    default: {
+      fail("Logrotate::Rule[${name}]: su must be a boolean")
+    }
+  }
+
   case $mailfirst {
     'undef',false: {}
     true: {
@@ -367,6 +387,14 @@ define logrotate::rule(
     fail("Logrotate::Rule[${name}]: create_mode requires create")
   }
 
+  # su validation
+  if ($su_group != 'undef') and ($su_owner == 'undef') {
+    fail("Logrotate::Rule[${name}]: su_group requires su_owner")
+  }
+
+  if ($su_owner != 'undef') and ($su != true) {
+    fail("Logrotate::Rule[${name}]: su_owner requires su")
+  }
   #############################################################################
   #
 
