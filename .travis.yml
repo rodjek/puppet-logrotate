@@ -1,4 +1,5 @@
 script: ./script/cibuild
+before_install: ./script/bootstrap
 rvm: 1.8.7
 notifications:
   email:
