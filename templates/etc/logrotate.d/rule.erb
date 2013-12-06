@@ -48,7 +48,7 @@
   end
 -%>
 <%= rpath %> {
-<% opts.each do |opt| -%>
+<% opts.sort_by{|key,value| key}.each do |opt| -%>
   <%= opt %>
 <% end -%>
 <% if @postrotate != 'undef' -%>
