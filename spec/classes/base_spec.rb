@@ -34,26 +34,26 @@ describe 'logrotate::base' do
   context 'on Debian' do
     let(:facts) { {:osfamily => 'Debian'} }
 
-    it { should include_class('logrotate::defaults::debian') }
+    it { should contain_class('logrotate::defaults::debian') }
   end
 
   context 'on RedHat' do
     let(:facts) { {:osfamily => 'RedHat'} }
 
-    it { should include_class('logrotate::defaults::redhat') }
+    it { should contain_class('logrotate::defaults::redhat') }
   end
 
   context 'on SuSE' do
     let(:facts) { {:osfamily => 'SuSE'} }
 
-    it { should include_class('logrotate::defaults::suse') }
+    it { should contain_class('logrotate::defaults::suse') }
   end
 
   context 'on Gentoo' do
     let(:facts) { {:operatingsystem => 'Gentoo'} }
 
-    it { should_not include_class('logrotate::defaults::debian') }
-    it { should_not include_class('logrotate::defaults::redhat') }
-    it { should_not include_class('logrotate::defaults::suse') }
+    it { should_not contain_class('logrotate::defaults::debian') }
+    it { should_not contain_class('logrotate::defaults::redhat') }
+    it { should_not contain_class('logrotate::defaults::suse') }
   end
 end

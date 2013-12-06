@@ -14,7 +14,7 @@ describe 'logrotate::rule' do
 
     let(:params) { {:path => '/var/log/foo.log'} }
     it do
-      should include_class('logrotate::base')
+      should contain_class('logrotate::base')
       should contain_file('/etc/logrotate.d/test').with({
         'owner'   => 'root',
         'group'   => 'root',
@@ -742,7 +742,7 @@ describe 'logrotate::rule' do
         {:path => '/var/log/foo.log', :rotate_every => 'hour'}
       }
 
-      it { should include_class('logrotate::hourly') }
+      it { should contain_class('logrotate::hourly') }
       it { should contain_file('/etc/logrotate.d/hourly/test') }
     end
 
