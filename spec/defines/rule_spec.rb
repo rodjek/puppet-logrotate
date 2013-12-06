@@ -981,6 +981,100 @@ describe 'logrotate::rule' do
     end
 
     ###########################################################################
+    # SU / SU_OWNER / SU_GROUP
+    context 'and su => true' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :su => true}
+      }
+
+      context 'and su_owner => www-data' do
+        let(:params) {
+          {
+            :path     => '/var/log/foo.log',
+            :su       => true,
+            :su_owner => 'www-data',
+          }
+        }
+
+        it do
+          should contain_file('/etc/logrotate.d/test') \
+            .with_content(/^  su www-data/)
+        end
+
+        context 'and su_group => admin' do
+          let(:params) {
+            {
+              :path     => '/var/log/foo.log',
+              :su       => true,
+              :su_owner => 'www-data',
+              :su_group => 'admin',
+            }
+          }
+
+          it do
+            should contain_file('/etc/logrotate.d/test') \
+              .with_content(/^  su www-data admin$/)
+          end
+        end
+      end
+
+      context 'and su_group => admin' do
+        let(:params) {
+          {
+            :path     => '/var/log/foo.log',
+            :su       => true,
+            :su_group => 'admin',
+          }
+        }
+
+        it do
+          expect {
+            should contain_file('/etc/logrotate.d/test')
+          }.to raise_error(Puppet::Error, /su_group requires su_owner/)
+        end
+      end
+    end
+
+    context 'and su => false' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :su => false}
+      }
+
+      it do
+        should_not contain_file('/etc/logrotate.d/test') \
+          .with_content(/^  su\s/)
+      end
+
+      context 'and su_owner => wwww-data' do
+        let(:params) {
+          {
+            :path     => '/var/log/foo.log',
+            :su       => false,
+            :su_owner => 'www-data',
+          }
+        }
+
+        it do
+          expect {
+            should contain_file('/etc/logrotate.d/test')
+          }.to raise_error(Puppet::Error, /su_owner requires su/)
+        end
+      end
+    end
+
+    context 'and su => foo' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :su => 'foo'}
+      }
+
+      it do
+        expect {
+          should contain_file('/etc/logrotate.d/test')
+        }.to raise_error(Puppet::Error, /su must be a boolean/)
+      end
+    end
+
+    ###########################################################################
     # UNCOMPRESSCMD
     context 'and uncompresscmd => bunzip2' do
       let(:params) {

@@ -103,6 +103,15 @@ shredcycles     - The Integer number of times shred should overwrite log files
                   before unlinking them (optional).
 start           - The Integer number to be used as the base for the extensions
                   appended to the rotated log files (optional).
+su              - A Boolean specifying whether logrotate should rotate under a
+                  specific user and group instead of the default (optional).
+                  First available in logrotate 3.8.0.
+su_owner        - A username String that logrotate should use to rotate a
+                  log file set instead of using the default if
+                  su => true (optional).
+su_group        - A String group name that logrotate should use to rotate a
+                  log file set instead of using the default if
+                  su => true (optional).
 uncompresscmd   - The String command to be used to uncompress log files
                   (optional).
 ```
