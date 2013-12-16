@@ -12,13 +12,4 @@ class logrotate::defaults::debian {
     create_group => 'utmp',
     rotate       => 1,
   }
-
-  logrotate::rule {
-    'wtmp':
-      path        => '/var/log/wtmp',
-      create_mode => '0664';
-    'btmp':
-      path        => '/var/log/btmp',
-      create_mode => '0660';
-  }
 }
