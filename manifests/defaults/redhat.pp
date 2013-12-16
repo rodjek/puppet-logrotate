@@ -12,16 +12,4 @@ class logrotate::defaults::redhat {
     create_group => 'utmp',
     rotate       => 1,
   }
-
-  logrotate::rule {
-    'wtmp':
-      path        => '/var/log/wtmp',
-      create_mode => '0664',
-      missingok   => false,
-      minsize     => '1M';
-    'btmp':
-      path        => '/var/log/btmp',
-      create_mode => '0660',
-      minsize     => '1M';
-  }
 }
