@@ -406,9 +406,17 @@ define logrotate::rule(
     'hour', 'hourly': {
       include logrotate::hourly
       $rule_path = "/etc/logrotate.d/hourly/${name}"
+
+      file { "/etc/logrotate.d/${name}":
+        ensure => absent,
+      }
     }
     default: {
       $rule_path = "/etc/logrotate.d/${name}"
+
+      file { "/etc/logrotate.d/hourly/${name}":
+        ensure => absent,
+      }
     }
   }
 

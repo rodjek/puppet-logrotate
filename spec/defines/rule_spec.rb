@@ -744,6 +744,7 @@ describe 'logrotate::rule' do
 
       it { should contain_class('logrotate::hourly') }
       it { should contain_file('/etc/logrotate.d/hourly/test') }
+      it { should contain_file('/etc/logrotate.d/test').with_ensure('absent') }
     end
 
     context 'and rotate_every => day' do
@@ -754,6 +755,11 @@ describe 'logrotate::rule' do
       it do
         should contain_file('/etc/logrotate.d/test') \
           .with_content(/^  daily$/)
+      end
+
+      it do
+        should contain_file('/etc/logrotate.d/hourly/test') \
+           .with_ensure('absent')
       end
     end
 
@@ -766,6 +772,11 @@ describe 'logrotate::rule' do
         should contain_file('/etc/logrotate.d/test') \
           .with_content(/^  weekly$/)
       end
+
+      it do
+        should contain_file('/etc/logrotate.d/hourly/test') \
+           .with_ensure('absent')
+      end
     end
 
     context 'and rotate_every => month' do
@@ -777,6 +788,11 @@ describe 'logrotate::rule' do
         should contain_file('/etc/logrotate.d/test') \
           .with_content(/^  monthly$/)
       end
+
+      it do
+        should contain_file('/etc/logrotate.d/hourly/test') \
+           .with_ensure('absent')
+      end
     end
 
     context 'and rotate_every => year' do
@@ -787,6 +803,11 @@ describe 'logrotate::rule' do
       it do
         should contain_file('/etc/logrotate.d/test') \
           .with_content(/^  yearly$/)
+      end
+
+      it do
+        should contain_file('/etc/logrotate.d/hourly/test') \
+           .with_ensure('absent')
       end
     end
 
