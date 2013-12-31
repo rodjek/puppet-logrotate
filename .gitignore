@@ -1,2 +1,3 @@
 .bundle/
-vendor/gems
+vendor/gems/
+.ruby-version
