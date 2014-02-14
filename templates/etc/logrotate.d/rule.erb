@@ -51,7 +51,9 @@
 <% end -%>
 <% if @postrotate != 'undef' -%>
   postrotate
-    <%= @postrotate %>
+<% @postrotate.each do |val| -%>
+    <%= val %>
+<% end -%>
   endscript
 <% end -%>
 <% if @prerotate != 'undef' -%>
