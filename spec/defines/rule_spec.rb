@@ -671,6 +671,17 @@ describe 'logrotate::rule' do
       end
     end
 
+    context "and postrotate => ['/bin/true', '/bin/false']" do
+      let(:params) {
+        {:path => '/var/log/foo.log', :postrotate => ['/bin/true', '/bin/false']}
+      }
+
+      it do
+        should contain_file('/etc/logrotate.d/test') \
+          .with_content(/postrotate\n    \/bin\/true\n    \/bin\/false\n  endscript/)
+      end
+    end
+
     ###########################################################################
     # PREROTATE
     context 'and prerotate => /bin/true' do
