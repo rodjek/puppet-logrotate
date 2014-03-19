@@ -10,30 +10,30 @@
     rpath = @path
   end
 
-  if scope.to_hash.has_key?('_create')
-    if @_create == 'create'
-      opts << [@_create, @create_mode, @create_owner, @create_group].reject { |r|
+  if scope.to_hash.has_key?('sane_create')
+    if @sane_create == 'create'
+      opts << [@sane_create, @create_mode, @create_owner, @create_group].reject { |r|
         r == 'undef'
       }.join(' ')
     else
-      opts << @_create
+      opts << @sane_create
     end
   end
 
-  if scope.to_hash.has_key?('_su')
-    if @_su == 'su'
-      opts << [@_su, @su_owner, @su_group].reject { |r|
+  if scope.to_hash.has_key?('sane_su')
+    if @sane_su == 'su'
+      opts << [@sane_su, @su_owner, @su_group].reject { |r|
         r == 'undef'
       }.join(' ')
     end
   end
 
   [
-    '_compress', '_copy', '_copytruncate', '_delaycompress', '_dateext',
-    '_mail', '_missingok', '_olddir', '_sharedscripts', '_ifempty', '_maillast',
-    '_mailfirst', '_shred', '_rotate_every'
+    'compress', 'copy', 'copytruncate', 'delaycompress', 'dateext',
+    'mail', 'missingok', 'olddir', 'sharedscripts', 'ifempty', 'maillast',
+    'mailfirst', 'shred', 'rotate_every'
   ].each do |bool|
-    opts << scope.to_hash[bool] if scope.to_hash.has_key?(bool)
+    opts << scope.to_hash["sane_#{bool}"] if scope.to_hash.has_key?("sane_#{bool}")
   end
 
   [
