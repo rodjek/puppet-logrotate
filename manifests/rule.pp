@@ -178,8 +178,8 @@ define logrotate::rule(
 
   case $compress {
     'undef': {}
-    true: { $_compress = 'compress' }
-    false: { $_compress = 'nocompress' }
+    true: { $sane_compress = 'compress' }
+    false: { $sane_compress = 'nocompress' }
     default: {
       fail("Logrotate::Rule[${name}]: compress must be a boolean")
     }
@@ -187,8 +187,8 @@ define logrotate::rule(
 
   case $copy {
     'undef': {}
-    true: { $_copy = 'copy' }
-    false: { $_copy = 'nocopy' }
+    true: { $sane_copy = 'copy' }
+    false: { $sane_copy = 'nocopy' }
     default: {
       fail("Logrotate::Rule[${name}]: copy must be a boolean")
     }
@@ -196,8 +196,8 @@ define logrotate::rule(
 
   case $copytruncate {
     'undef': {}
-    true: { $_copytruncate = 'copytruncate' }
-    false: { $_copytruncate = 'nocopytruncate' }
+    true: { $sane_copytruncate = 'copytruncate' }
+    false: { $sane_copytruncate = 'nocopytruncate' }
     default: {
       fail("Logrotate::Rule[${name}]: copytruncate must be a boolean")
     }
@@ -205,8 +205,8 @@ define logrotate::rule(
 
   case $create {
     'undef': {}
-    true: { $_create = 'create' }
-    false: { $_create = 'nocreate' }
+    true: { $sane_create = 'create' }
+    false: { $sane_create = 'nocreate' }
     default: {
       fail("Logrotate::Rule[${name}]: create must be a boolean")
     }
@@ -214,8 +214,8 @@ define logrotate::rule(
 
   case $delaycompress {
     'undef': {}
-    true: { $_delaycompress = 'delaycompress' }
-    false: { $_delaycompress = 'nodelaycompress' }
+    true: { $sane_delaycompress = 'delaycompress' }
+    false: { $sane_delaycompress = 'nodelaycompress' }
     default: {
       fail("Logrotate::Rule[${name}]: delaycompress must be a boolean")
     }
@@ -223,8 +223,8 @@ define logrotate::rule(
 
   case $dateext {
     'undef': {}
-    true: { $_dateext = 'dateext' }
-    false: { $_dateext = 'nodateext' }
+    true: { $sane_dateext = 'dateext' }
+    false: { $sane_dateext = 'nodateext' }
     default: {
       fail("Logrotate::Rule[${name}]: dateext must be a boolean")
     }
@@ -232,16 +232,16 @@ define logrotate::rule(
 
   case $mail {
     'undef': {}
-    false: { $_mail = 'nomail' }
+    false: { $sane_mail = 'nomail' }
     default: {
-      $_mail = "mail ${mail}"
+      $sane_mail = "mail ${mail}"
     }
   }
 
   case $missingok {
     'undef': {}
-    true: { $_missingok = 'missingok' }
-    false: { $_missingok = 'nomissingok' }
+    true: { $sane_missingok = 'missingok' }
+    false: { $sane_missingok = 'nomissingok' }
     default: {
       fail("Logrotate::Rule[${name}]: missingok must be a boolean")
     }
@@ -249,16 +249,16 @@ define logrotate::rule(
 
   case $olddir {
     'undef': {}
-    false: { $_olddir = 'noolddir' }
+    false: { $sane_olddir = 'noolddir' }
     default: {
-      $_olddir = "olddir ${olddir}"
+      $sane_olddir = "olddir ${olddir}"
     }
   }
 
   case $sharedscripts {
     'undef': {}
-    true: { $_sharedscripts = 'sharedscripts' }
-    false: { $_sharedscripts = 'nosharedscripts' }
+    true: { $sane_sharedscripts = 'sharedscripts' }
+    false: { $sane_sharedscripts = 'nosharedscripts' }
     default: {
       fail("Logrotate::Rule[${name}]: sharedscripts must be a boolean")
     }
@@ -266,8 +266,8 @@ define logrotate::rule(
 
   case $shred {
     'undef': {}
-    true: { $_shred = 'shred' }
-    false: { $_shred = 'noshred' }
+    true: { $sane_shred = 'shred' }
+    false: { $sane_shred = 'noshred' }
     default: {
       fail("Logrotate::Rule[${name}]: shred must be a boolean")
     }
@@ -275,8 +275,8 @@ define logrotate::rule(
 
   case $ifempty {
     'undef': {}
-    true: { $_ifempty = 'ifempty' }
-    false: { $_ifempty = 'notifempty' }
+    true: { $sane_ifempty = 'ifempty' }
+    false: { $sane_ifempty = 'notifempty' }
     default: {
       fail("Logrotate::Rule[${name}]: ifempty must be a boolean")
     }
@@ -285,11 +285,11 @@ define logrotate::rule(
   case $rotate_every {
     'undef': {}
     'hour', 'hourly': {}
-    'day': { $_rotate_every = 'daily' }
-    'week': { $_rotate_every = 'weekly' }
-    'month': { $_rotate_every = 'monthly' }
-    'year': { $_rotate_every = 'yearly' }
-    'daily', 'weekly','monthly','yearly': { $_rotate_every = $rotate_every }
+    'day': { $sane_rotate_every = 'daily' }
+    'week': { $sane_rotate_every = 'weekly' }
+    'month': { $sane_rotate_every = 'monthly' }
+    'year': { $sane_rotate_every = 'yearly' }
+    'daily', 'weekly','monthly','yearly': { $sane_rotate_every = $rotate_every }
     default: {
       fail("Logrotate::Rule[${name}]: invalid rotate_every value")
     }
@@ -345,7 +345,7 @@ define logrotate::rule(
 
   case $su {
     'undef',false: {}
-    true: { $_su = 'su' }
+    true: { $sane_su = 'su' }
     default: {
       fail("Logrotate::Rule[${name}]: su must be a boolean")
     }
@@ -358,7 +358,7 @@ define logrotate::rule(
         fail("Logrotate::Rule[${name}]: Can't set both mailfirst and maillast")
       }
 
-      $_mailfirst = 'mailfirst'
+      $sane_mailfirst = 'mailfirst'
     }
     default: {
       fail("Logrotate::Rule[${name}]: mailfirst must be a boolean")
@@ -368,7 +368,7 @@ define logrotate::rule(
   case $maillast {
     'undef',false: {}
     true: {
-      $_maillast = 'maillast'
+      $sane_maillast = 'maillast'
     }
     default: {
       fail("Logrotate::Rule[${name}]: maillast must be a boolean")
