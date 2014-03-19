@@ -671,6 +671,17 @@ describe 'logrotate::rule' do
       end
     end
 
+    context "and postrotate => ['/bin/true', '/bin/false']" do
+      let(:params) {
+        {:path => '/var/log/foo.log', :postrotate => ['/bin/true', '/bin/false']}
+      }
+
+      it do
+        should contain_file('/etc/logrotate.d/test') \
+          .with_content(/postrotate\n    \/bin\/true\n    \/bin\/false\n  endscript/)
+      end
+    end
+
     ###########################################################################
     # PREROTATE
     context 'and prerotate => /bin/true' do
@@ -681,6 +692,17 @@ describe 'logrotate::rule' do
       it do
         should contain_file('/etc/logrotate.d/test') \
           .with_content(/prerotate\n    \/bin\/true\n  endscript/)
+      end
+    end
+
+    context "and prerotate => ['/bin/true', '/bin/false']" do
+      let(:params) {
+        {:path => '/var/log/foo.log', :prerotate => ['/bin/true', '/bin/false']}
+      }
+
+      it do
+        should contain_file('/etc/logrotate.d/test') \
+          .with_content(/prerotate\n    \/bin\/true\n    \/bin\/false\n  endscript/)
       end
     end
 
@@ -697,6 +719,17 @@ describe 'logrotate::rule' do
       end
     end
 
+    context "and firstaction => ['/bin/true', '/bin/false']" do
+      let(:params) {
+        {:path => '/var/log/foo.log', :firstaction => ['/bin/true', '/bin/false']}
+      }
+
+      it do
+        should contain_file('/etc/logrotate.d/test') \
+          .with_content(/firstaction\n    \/bin\/true\n    \/bin\/false\n  endscript/)
+      end
+    end
+
     ###########################################################################
     # LASTACTION
     context 'and lastaction => /bin/true' do
@@ -707,6 +740,17 @@ describe 'logrotate::rule' do
       it do
         should contain_file('/etc/logrotate.d/test') \
           .with_content(/lastaction\n    \/bin\/true\n  endscript/)
+      end
+    end
+
+    context "and lastaction => ['/bin/true', '/bin/false']" do
+      let(:params) {
+        {:path => '/var/log/foo.log', :lastaction => ['/bin/true', '/bin/false']}
+      }
+
+      it do
+        should contain_file('/etc/logrotate.d/test') \
+          .with_content(/lastaction\n    \/bin\/true\n    \/bin\/false\n  endscript/)
       end
     end
 
@@ -744,6 +788,7 @@ describe 'logrotate::rule' do
 
       it { should contain_class('logrotate::hourly') }
       it { should contain_file('/etc/logrotate.d/hourly/test') }
+      it { should contain_file('/etc/logrotate.d/test').with_ensure('absent') }
     end
 
     context 'and rotate_every => day' do
@@ -754,6 +799,11 @@ describe 'logrotate::rule' do
       it do
         should contain_file('/etc/logrotate.d/test') \
           .with_content(/^  daily$/)
+      end
+
+      it do
+        should contain_file('/etc/logrotate.d/hourly/test') \
+           .with_ensure('absent')
       end
     end
 
@@ -766,6 +816,11 @@ describe 'logrotate::rule' do
         should contain_file('/etc/logrotate.d/test') \
           .with_content(/^  weekly$/)
       end
+
+      it do
+        should contain_file('/etc/logrotate.d/hourly/test') \
+           .with_ensure('absent')
+      end
     end
 
     context 'and rotate_every => month' do
@@ -777,6 +832,11 @@ describe 'logrotate::rule' do
         should contain_file('/etc/logrotate.d/test') \
           .with_content(/^  monthly$/)
       end
+
+      it do
+        should contain_file('/etc/logrotate.d/hourly/test') \
+           .with_ensure('absent')
+      end
     end
 
     context 'and rotate_every => year' do
@@ -787,6 +847,11 @@ describe 'logrotate::rule' do
       it do
         should contain_file('/etc/logrotate.d/test') \
           .with_content(/^  yearly$/)
+      end
+
+      it do
+        should contain_file('/etc/logrotate.d/hourly/test') \
+           .with_ensure('absent')
       end
     end
 

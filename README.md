@@ -74,17 +74,17 @@ missingok       - A Boolean specifying whether logrotate should ignore missing
                   log files or issue an error (optional).
 olddir          - A String path to a directory that rotated logs should be
                   moved to (optional).
-postrotate      - A command String that should be executed by /bin/sh after
-                  the log file is rotated (optional).
-prerotate       - A command String that should be executed by /bin/sh before
-                  the log file is rotated and only if it will be rotated
-                  (optional).
-firstaction     - A command String that should be executed by /bin/sh once
-                  before all log files that match the wildcard pattern are
-                  rotated (optional).
-lastaction      - A command String that should be execute by /bin/sh once 
-                  after all the log files that match the wildcard pattern are
-                  rotated (optional).
+postrotate      - A command String or an Array of Strings that should be
+                  executed by /bin/sh after the log file is rotated (optional).
+prerotate       - A command String or an Array of Strings that should be
+                  executed by /bin/sh before the log file is rotated and only
+                  if it will be rotated (optional).
+firstaction     - A command String or an Array of Strings that should be
+                  executed by /bin/sh once before all log files that match the
+                  wildcard pattern are rotated (optional).
+lastaction      - A command String or an Array of Strings that should be
+                  executed by /bin/sh once after all the log files that match
+                  the wildcard pattern are rotated (optional).
 rotate          - The Integer number of rotated log files to keep on disk
                   (optional).
 rotate_every    - How often the log files should be rotated as a String.

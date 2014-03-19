@@ -2,5 +2,10 @@
 # THIS FILE IS AUTOMATICALLY DISTRIBUTED BY PUPPET.  ANY CHANGES WILL BE
 # OVERWRITTEN.
 
-test -x /usr/sbin/logrotate || exit 0
-/usr/sbin/logrotate /etc/logrotate.d/hourly
+OUTPUT=$(/usr/sbin/logrotate /etc/logrotate.d/hourly 2>&1)
+EXITVALUE=$?
+if [ $EXITVALUE != 0 ]; then
+    /usr/bin/logger -t logrotate "ALERT exited abnormally with [$EXITVALUE]"
+    echo "${OUTPUT}"
+fi
+exit $EXITVALUE
