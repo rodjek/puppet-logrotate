@@ -74,8 +74,8 @@ missingok       - A Boolean specifying whether logrotate should ignore missing
                   log files or issue an error (optional).
 olddir          - A String path to a directory that rotated logs should be
                   moved to (optional).
-postrotate      - A command String that should be executed by /bin/sh after
-                  the log file is rotated (optional).
+postrotate      - A command String or an Array of Strings that should be
+                  executed by /bin/sh after the log file is rotated (optional).
 prerotate       - A command String that should be executed by /bin/sh before
                   the log file is rotated and only if it will be rotated
                   (optional).
