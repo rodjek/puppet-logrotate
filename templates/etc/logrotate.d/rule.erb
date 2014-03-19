@@ -51,6 +51,7 @@
 <% end -%>
 <% if @postrotate != 'undef' -%>
   postrotate
+  <%- @postrotate = [@postrotate] unless @postrotate.is_a?(Array) -%>
 <% @postrotate.each do |val| -%>
     <%= val %>
 <% end -%>
