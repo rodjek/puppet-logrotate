@@ -52,24 +52,33 @@
 <% if @postrotate != 'undef' -%>
   postrotate
   <%- @postrotate = [@postrotate] unless @postrotate.is_a?(Array) -%>
-<% @postrotate.each do |val| -%>
+  <%- @postrotate.each do |val| -%>
     <%= val %>
-<% end -%>
+  <%- end -%>
   endscript
 <% end -%>
 <% if @prerotate != 'undef' -%>
   prerotate
-    <%= @prerotate %>
+  <%- @prerotate = [@prerotate] unless @prerotate.is_a?(Array) -%>
+  <%- @prerotate.each do |val| -%>
+    <%= val %>
+  <%- end -%>
   endscript
 <% end -%>
 <% if @firstaction != 'undef' -%>
   firstaction
-    <%= @firstaction %>
+  <%- @firstaction = [@firstaction] unless @firstaction.is_a?(Array) -%>
+  <%- @firstaction.each do |val| -%>
+    <%= val %>
+  <%- end -%>
   endscript
 <% end -%>
 <% if @lastaction != 'undef' -%>
   lastaction
-    <%= @lastaction %>
+  <%- @lastaction = [@lastaction] unless @lastaction.is_a?(Array) -%>
+  <%- @lastaction.each do |val| -%>
+    <%= val %>
+  <%- end -%>
   endscript
 <% end -%>
 }
