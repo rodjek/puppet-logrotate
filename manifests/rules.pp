@@ -1,11 +1,17 @@
 # Class: logrotate::rules
 #
-# This class enables support for hiera based logrotate rules.
-# Hiera functionality is auto enabled during the initial logrotate module load.
+# This class loads user given logrotate rules
+#
+# PRIVATE CLASS: do not call directly
 #
 # See the primary logrotate module documentation for usage and examples.
 #
-class logrotate::rules {
+class logrotate::rules(
+
+  $rules      = $::logrotate::rules,
+  $hieramerge = $::logrotate::hieramerge
+
+) {
 
   # NOTE: hiera_hash does not work as expected in a parameterized class
   #   definition; so we call it here.
@@ -13,7 +19,13 @@ class logrotate::rules {
   # http://docs.puppetlabs.com/hiera/1/puppet.html#limitations
   # https://tickets.puppetlabs.com/browse/HI-118
   #
-  $rules = hiera_hash('logrotate::rules', undef)
+  if $hieramerge {
+    $x_rules = hiera_hash('logrotate::rules', $rules)
+
+  # Fall back to user given class parameter / priority based hiera lookup
+  } else {
+    $x_rules = $rules
+  }
 
   if $rules {
     create_resources('::logrotate::rule', $rules)

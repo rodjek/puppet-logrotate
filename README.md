@@ -17,7 +17,7 @@ exceptions:
 
 Two different methods are supported for managing the logrotate rules.
 
-### Using Code: `logrotate::rule`
+### Using Code: `logrotate::rule` Define or `logrotate::rules` Parameter
 
 The only thing you'll need to deal with, this type configures a logrotate rule.
 Using this type will automatically include the logrotate class that will install
@@ -122,7 +122,7 @@ uncompresscmd   - The String command to be used to uncompress log files
 
 Further details about these options can be found by reading `man 8 logrotate`.
 
-#### Examples
+#### Example: Using `logrotate::rule` Define
 
 ```puppet
 logrotate::rule { 'messages':
@@ -142,10 +142,35 @@ logrotate::rule { 'apache':
 }
 ```
 
+#### Example: Using `logrotate::rules` Parameter
+
+```puppet
+class {
+  logrotate: rules => {
+    messages => {
+      path         => '/var/log/messages',
+      rotate       => 5,
+      rotate_every => 'week',
+      postrotate   => '/usr/bin/killall -HUP syslogd',
+    },
+    apache => {
+      path          => '/var/log/httpd/*.log',
+      rotate        => 5,
+      mail          => 'test@example.com',
+      size          => '100k',
+      sharedscripts => true,
+      postrotate    => '/etc/init.d/httpd restart',
+    }
+  }
+}
+
+```
+
+
 ### Using Hiera
 
 A hiera hash may be used to manage the logrotate rules.
-Hash merging is also enabled, which supports layering the rules.
+Hash merging may also be enabled, which supports layering the rules.
 
 Examples using:
 - YAML backend
@@ -160,23 +185,10 @@ Examples using:
 
 #### Load module
 
-##### Using Puppet version 3+
-
 Load the module via Puppet Code or your ENC.
 
 ```puppet
-    include logrotate
-```
-
-##### Using Puppet version 2.7+
-
-After [Installing Hiera](http://docs.puppetlabs.com/hiera/1/installing.html):
-
-- Load the `logrotate` module and `logrotate::rules` class via Puppet Code or your ENC.
-
-```puppet
     include ::logrotate
-    include ::logrotate::rules
 ```
 
 #### Configure Hiera YAML __(defaults.yaml)__
@@ -184,34 +196,35 @@ After [Installing Hiera](http://docs.puppetlabs.com/hiera/1/installing.html):
 These defaults will apply to all systems.
 
 ```yaml
+logrotate::hieramerge: true
 logrotate::rules:
-    yum:
-        path            : '/var/log/yum.log'
-        missingok       : true
-        ifempty         : false
-        size            : '30k'
-        rotate_every    : 'year'
-        create          : true
-        create_mode     : '0600'
-        create_owner    : 'root'
-        create_group    : 'root'
-    syslog:
-        path            :
-            - '/var/log/cron'
-            - '/var/log/messages'
-            - '/var/log/secure'
-            - '/var/log/spooler'
-            - '/var/log/maillog'
-        rotate          : 5
-        rotate_every    : 'week'
-        postrotate      : '/usr/bin/killall -HUP syslogd'
-    apache:
-        path            : '/var/log/httpd/*.log'
-        rotate          : 5
-        mail            : 'test@example.com'
-        size            : '100k'
-        sharedscripts   : true
-        postrotate      : '/etc/init.d/httpd restart'
+  yum:
+    path            : '/var/log/yum.log'
+    missingok       : true
+    ifempty         : false
+    size            : '30k'
+    rotate_every    : 'year'
+    create          : true
+    create_mode     : '0600'
+    create_owner    : 'root'
+    create_group    : 'root'
+  syslog:
+    path            :
+      - '/var/log/cron'
+      - '/var/log/messages'
+      - '/var/log/secure'
+      - '/var/log/spooler'
+      - '/var/log/maillog'
+    rotate          : 5
+    rotate_every    : 'week'
+    postrotate      : '/usr/bin/killall -HUP syslogd'
+  apache:
+    path            : '/var/log/httpd/*.log'
+    rotate          : 5
+    mail            : 'test@example.com'
+    size            : '100k'
+    sharedscripts   : true
+    postrotate      : '/etc/init.d/httpd restart'
 ```
 
 #### Configure Hiera YAML __(production.yaml)__
@@ -224,21 +237,21 @@ In this example we are:
 
 ```yaml
 logrotate::rules:
-    syslog:
-        path            :
-            - '/var/log/cron'
-            - '/var/log/messages'
-            - '/var/log/secure'
-            - '/var/log/spooler'
-            - '/var/log/maillog'
-        rotate          : 5
-        rotate_every    : 'day'
-        postrotate      : '/usr/bin/killall -HUP syslogd'
-    apache:
-        ensure          : 'absent'
+  syslog:
+    path            :
+      - '/var/log/cron'
+      - '/var/log/messages'
+      - '/var/log/secure'
+      - '/var/log/spooler'
+      - '/var/log/maillog'
+    rotate          : 5
+    rotate_every    : 'day'
+    postrotate      : '/usr/bin/killall -HUP syslogd'
+  apache:
+    ensure          : 'absent'
 ```
 
-If you have Hiera version >= 1.2.0 and enable [Hiera Deeper Merging](http://docs.puppetlabs.com/hiera/1/lookup_types.html#deep-merging-in-hiera--120) you may conditionally override any setting.
+If you have Hiera version >= 1.2.0, set `logrotate::hieramerge` to true and enable [Hiera Deeper Merging](http://docs.puppetlabs.com/hiera/1/lookup_types.html#deep-merging-in-hiera--120) you may conditionally override any setting.
 
 In this example we are:
 - inheriting/preserving the __yum__ rule
@@ -248,8 +261,8 @@ In this example we are:
 
 ```yaml
 logrotate::rules:
-    syslog:
-        rotate_every    : 'day'
-    apache:
-        ensure          : 'absent'
+  syslog:
+    rotate_every    : 'day'
+  apache:
+    ensure          : 'absent'
 ```

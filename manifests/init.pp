@@ -9,7 +9,9 @@
 #
 class logrotate(
 
-  $packages = 'logrotate',
+  $packages   = 'logrotate',
+  $rules      = undef,
+  $hieramerge = false
 
 ) {
 
@@ -37,32 +39,14 @@ class logrotate(
       source  => 'puppet:///modules/logrotate/etc/cron.daily/logrotate';
   }
 
-  case $::osfamily {
-    'Debian': {
-      include ::logrotate::defaults::debian
-    }
-    'RedHat': {
-      include ::logrotate::defaults::redhat
-    }
-    'SuSE': {
-      include ::logrotate::defaults::suse
-    }
-    default: { }
+  # default rules
+  class { "::logrotate::defaults::${::osfamily}":
+    require => Package[$packages];
   }
 
-  # Load the Hiera based logrotate configuration (if enabled and present)
-  #
-  # NOTE: We must use 'include' here to avoid circular dependencies with
-  #     logrotate::rule
-  #
-  # NOTE: There is no way to detect the existence of hiera. This automatic
-  #   functionality is therefore made exclusive to Puppet 3+ (hiera is embedded)
-  #   in order to preserve backwards compatibility.
-  #
-  #   http://projects.puppetlabs.com/issues/12345
-  #
-  if (versioncmp($::puppetversion, '3') != -1) {
-    include ::logrotate::rules
+  # user specified rules
+  class { '::logrotate::rules':
+    requires => Package[$packages];
   }
 
 }
