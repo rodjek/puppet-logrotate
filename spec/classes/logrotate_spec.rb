@@ -1,6 +1,13 @@
 require 'spec_helper'
 
-describe 'logrotate::base' do
+describe 'logrotate' do
+
+  let :default_params do
+    {
+      :packages            => 'logrotate',
+    }
+  end
+
   it do
     should contain_package('logrotate').with_ensure('latest')
 
@@ -29,31 +36,34 @@ describe 'logrotate::base' do
       'source'  => 'puppet:///modules/logrotate/etc/cron.daily/logrotate',
       'require' => 'Package[logrotate]',
     })
+
+    should contain_class('::logrotate::rules')
   end
 
   context 'on Debian' do
     let(:facts) { {:osfamily => 'Debian'} }
 
-    it { should contain_class('logrotate::defaults::debian') }
+    it { should contain_class('::logrotate::defaults::debian') }
   end
 
   context 'on RedHat' do
     let(:facts) { {:osfamily => 'RedHat'} }
 
-    it { should contain_class('logrotate::defaults::redhat') }
+    it { should contain_class('::logrotate::defaults::redhat') }
   end
 
   context 'on SuSE' do
     let(:facts) { {:osfamily => 'SuSE'} }
 
-    it { should contain_class('logrotate::defaults::suse') }
+    it { should contain_class('::logrotate::defaults::suse') }
   end
 
   context 'on Gentoo' do
     let(:facts) { {:operatingsystem => 'Gentoo'} }
 
-    it { should_not contain_class('logrotate::defaults::debian') }
-    it { should_not contain_class('logrotate::defaults::redhat') }
-    it { should_not contain_class('logrotate::defaults::suse') }
+    it { should_not contain_class('::logrotate::defaults::debian') }
+    it { should_not contain_class('::logrotate::defaults::redhat') }
+    it { should_not contain_class('::logrotate::defaults::suse') }
   end
+
 end
