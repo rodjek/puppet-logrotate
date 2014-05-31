@@ -28,7 +28,7 @@ class logrotate::rules(
   }
 
   if $rules {
-    create_resources('::logrotate::rule', $rules)
+    create_resources('logrotate::rule', $rules)
   }
 
 }

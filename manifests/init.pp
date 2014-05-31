@@ -40,13 +40,28 @@ class logrotate(
   }
 
   # default rules
-  class { "::logrotate::defaults::${::osfamily}":
-    require => Package[$packages];
+  case $::osfamily {
+    'Debian': {
+      class { '::logrotate::defaults::debian':
+        require => Package[$packages];
+      }
+    }
+    'RedHat': {
+      class { '::logrotate::defaults::redhat':
+        require => Package[$packages];
+      }
+    }
+    'SuSE': {
+      class { '::logrotate::defaults::suse':
+        require => Package[$packages];
+      }
+    }
+    default: { }
   }
 
   # user specified rules
   class { '::logrotate::rules':
-    requires => Package[$packages];
+    require => Package[$packages];
   }
 
 }

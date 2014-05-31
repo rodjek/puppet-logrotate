@@ -401,7 +401,10 @@ define logrotate::rule(
   #############################################################################
   #
 
-  include ::logrotate
+  # Backwards compatibility
+  if ! defined('::logrotate') {
+    include '::logrotate'
+  }
 
   case $rotate_every {
     'hour', 'hourly': {
