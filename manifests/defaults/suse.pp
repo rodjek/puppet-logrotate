@@ -10,8 +10,8 @@ class logrotate::defaults::suse {
     create       => true,
     create_owner => 'root',
     create_group => 'utmp',
-    rotate       => 99,
-    maxage       => 365,
+    rotate       => '99',
+    maxage       => '365',
     size         => '400k'
   }
 
