@@ -3,7 +3,9 @@
 # Examples
 #
 #   include logrotate::base
-class logrotate::base {
+class logrotate::base (
+  $manage_cron_daily = true,
+) {
   package { 'logrotate':
     ensure => latest,
   }
@@ -22,10 +24,14 @@ class logrotate::base {
     '/etc/logrotate.d':
       ensure  => directory,
       mode    => '0755';
-    '/etc/cron.daily/logrotate':
+  }
+
+  if $manage_cron_daily {
+    file { '/etc/cron.daily/logrotate':
       ensure  => file,
       mode    => '0555',
       source  => 'puppet:///modules/logrotate/etc/cron.daily/logrotate';
+    }
   }
 
   case $::osfamily {
