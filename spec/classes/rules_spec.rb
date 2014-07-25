@@ -51,7 +51,6 @@ describe 'logrotate::rules', :type => :class do
   end
 
   describe 'with rules and explicit hiera lookup' do
-    set hiera_config
     let (:hiera_config) { hiera_file }
 
     hiera       = Hiera.new(:config => hiera_file)
@@ -59,7 +58,7 @@ describe 'logrotate::rules', :type => :class do
     rules       = hiera.lookup('logrotate::rules', nil, nil)
 
     let(:params) { {
-      :rules      => rules
+      :rules      => rules,
       :hieramerge => hieramerge,
     } }
 
