@@ -1,4 +1,5 @@
 require 'spec_helper'
+hiera_file = 'spec/fixtures/hiera/hiera.yaml'
 
 describe 'logrotate::rules', :type => :class do
 
@@ -6,7 +7,7 @@ describe 'logrotate::rules', :type => :class do
     it { should have_logrotate__rule_resource_count(0) }
   end
 
-  describe 'with rules' do
+  describe 'with rules and no hiera lookup' do
     let(:params) { {
       :rules      => {
           'messages' => {
@@ -24,7 +25,42 @@ describe 'logrotate::rules', :type => :class do
             'postrotate'    => '/etc/init.d/httpd restart',
           }
       },
-      :hieramerge   => true,
+      :hieramerge   => false,
+    } }
+
+    it 'should have logrotate rule: messages' do
+      should contain_logrotate__rule('messages').with({
+        :path           => '/var/log/messages',
+        :rotate         => 5,
+        :rotate_every   => 'week',
+        :postrotate     => '/usr/bin/killall -HUP syslogd',
+      })
+    end
+
+    it 'should have logrotate rule: apache' do
+      should contain_logrotate__rule('apache').with({
+        :path           => '/var/log/httpd/*.log',
+        :rotate         => 5,
+        :mail           => 'test@example.com',
+        :size           => '100k',
+        :sharedscripts  => true,
+        :postrotate     => '/etc/init.d/httpd restart',
+      })
+    end
+
+  end
+
+  describe 'with rules and explicit hiera lookup' do
+    set hiera_config
+    let (:hiera_config) { hiera_file }
+
+    hiera       = Hiera.new(:config => hiera_file)
+    hieramerge  = hiera.lookup('logrotate::hieramerge', nil, nil)
+    rules       = hiera.lookup('logrotate::rules', nil, nil)
+
+    let(:params) { {
+      :rules      => rules
+      :hieramerge => hieramerge,
     } }
 
     it 'should have logrotate rule: messages' do

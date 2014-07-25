@@ -1,0 +1,30 @@
+--
+logrotate::hieramerge: true
+logrotate::rules:
+  yum:
+    path            : '/var/log/yum.log'
+    missingok       : true
+    ifempty         : false
+    size            : '30k'
+    rotate_every    : 'year'
+    create          : true
+    create_mode     : '0600'
+    create_owner    : 'root'
+    create_group    : 'root'
+  syslog:
+    path            :
+      - '/var/log/cron'
+      - '/var/log/messages'
+      - '/var/log/secure'
+      - '/var/log/spooler'
+      - '/var/log/maillog'
+    rotate          : 5
+    rotate_every    : 'week'
+    postrotate      : '/usr/bin/killall -HUP syslogd'
+  apache:
+    path            : '/var/log/httpd/*.log'
+    rotate          : 5
+    mail            : 'test@example.com'
+    size            : '100k'
+    sharedscripts   : true
+    postrotate      : '/etc/init.d/httpd restart'
