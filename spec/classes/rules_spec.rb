@@ -1,7 +1,9 @@
 require 'spec_helper'
 hiera_file = 'spec/fixtures/hiera/hiera.yaml'
 
-describe 'logrotate::rules', :type => :class do
+# NOTE: not supported on puppet versions <= 2.6
+
+describe 'logrotate::rules', :type => :class, :unsupported => 2.6 do
 
   describe 'with no rules' do
     it { should have_logrotate__rule_resource_count(0) }
@@ -50,8 +52,7 @@ describe 'logrotate::rules', :type => :class do
 
   end
 
-  # NOTE: not supported on puppet versions <= 2.6
-  describe 'with rules and explicit hiera lookup', :unsupported => 2.6 do
+  describe 'with rules and explicit hiera lookup' do
     let (:hiera_config) { hiera_file }
 
     hiera       = Hiera.new(:config => hiera_file)
