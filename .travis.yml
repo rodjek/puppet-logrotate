@@ -7,6 +7,7 @@ notifications:
   email:
     - tim@github.com
 env:
+  - PUPPET_VERSION=2.6.18
   - PUPPET_VERSION=3.0.2
   - PUPPET_VERSION=3.1.1
   - PUPPET_VERSION=3.2.4
@@ -17,9 +18,6 @@ env:
 
 matrix:
   include:
-    - env: PUPPET_VERSION=2.6.18
-      rvm: 1.8.7
-      gemfile: Gemfile-puppet2
     - env: PUPPET_VERSION=2.7.24
       rvm: 1.8.7
-      gemfile: Gemfile-puppet2
+      gemfile: Gemfile-puppet27

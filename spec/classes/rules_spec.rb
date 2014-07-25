@@ -50,7 +50,8 @@ describe 'logrotate::rules', :type => :class do
 
   end
 
-  describe 'with rules and explicit hiera lookup' do
+  # NOTE: not supported on puppet versions <= 2.6
+  describe 'with rules and explicit hiera lookup', :unsupported => 2.6 do
     let (:hiera_config) { hiera_file }
 
     hiera       = Hiera.new(:config => hiera_file)
