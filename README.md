@@ -13,10 +13,14 @@ exceptions:
  * Instead of 'daily', 'weekly', 'monthly' or 'yearly', there is a
    `rotate_every` parameter (see documentation below).
 
-## logrotate::rule
+## Usage
+
+Two different methods are supported for managing the logrotate rules.
+
+### Using Code: `logrotate::rule` Define or `logrotate::rules` Parameter
 
 The only thing you'll need to deal with, this type configures a logrotate rule.
-Using this type will automatically include a private class that will install
+Using this type will automatically include the logrotate class that will install
 and configure logrotate for you.
 
 ```
@@ -118,9 +122,9 @@ uncompresscmd   - The String command to be used to uncompress log files
 
 Further details about these options can be found by reading `man 8 logrotate`.
 
-### Examples
+#### Example: Using `logrotate::rule` Define
 
-```
+```puppet
 logrotate::rule { 'messages':
   path         => '/var/log/messages',
   rotate       => 5,
@@ -136,4 +140,129 @@ logrotate::rule { 'apache':
   sharedscripts => true,
   postrotate    => '/etc/init.d/httpd restart',
 }
+```
+
+#### Example: Using `logrotate::rules` Parameter
+
+```puppet
+class {
+  logrotate: rules => {
+    messages => {
+      path         => '/var/log/messages',
+      rotate       => 5,
+      rotate_every => 'week',
+      postrotate   => '/usr/bin/killall -HUP syslogd',
+    },
+    apache => {
+      path          => '/var/log/httpd/*.log',
+      rotate        => 5,
+      mail          => 'test@example.com',
+      size          => '100k',
+      sharedscripts => true,
+      postrotate    => '/etc/init.d/httpd restart',
+    }
+  }
+}
+
+```
+
+
+### Using Hiera
+
+A hiera hash may be used to manage the logrotate rules.
+Hash merging may also be enabled, which supports layering the rules.
+
+Examples using:
+- YAML backend
+- an environment called __production__
+- a __/etc/puppet/hiera.yaml__ hierarchy configuration:
+
+```yaml
+:hierarchy:
+  - "%{environment}"
+  - "defaults"
+```
+
+#### Load module
+
+Load the module via Puppet Code or your ENC.
+
+```puppet
+    include ::logrotate
+```
+
+#### Configure Hiera YAML __(defaults.yaml)__
+
+These defaults will apply to all systems.
+
+```yaml
+logrotate::hieramerge: true
+logrotate::rules:
+  yum:
+    path            : '/var/log/yum.log'
+    missingok       : true
+    ifempty         : false
+    size            : '30k'
+    rotate_every    : 'year'
+    create          : true
+    create_mode     : '0600'
+    create_owner    : 'root'
+    create_group    : 'root'
+  syslog:
+    path            :
+      - '/var/log/cron'
+      - '/var/log/messages'
+      - '/var/log/secure'
+      - '/var/log/spooler'
+      - '/var/log/maillog'
+    rotate          : 5
+    rotate_every    : 'week'
+    postrotate      : '/usr/bin/killall -HUP syslogd'
+  apache:
+    path            : '/var/log/httpd/*.log'
+    rotate          : 5
+    mail            : 'test@example.com'
+    size            : '100k'
+    sharedscripts   : true
+    postrotate      : '/etc/init.d/httpd restart'
+```
+
+#### Configure Hiera YAML __(production.yaml)__
+
+This will only apply to the production environment.
+In this example we are:
+- inheriting/preserving the __yum__ rule
+- overriding the __syslog__ rule
+- disabling the __apache__ rule
+
+```yaml
+logrotate::rules:
+  syslog:
+    path            :
+      - '/var/log/cron'
+      - '/var/log/messages'
+      - '/var/log/secure'
+      - '/var/log/spooler'
+      - '/var/log/maillog'
+    rotate          : 5
+    rotate_every    : 'day'
+    postrotate      : '/usr/bin/killall -HUP syslogd'
+  apache:
+    ensure          : 'absent'
+```
+
+If you have Hiera version >= 1.2.0, set `logrotate::hieramerge` to true and enable [Hiera Deeper Merging](http://docs.puppetlabs.com/hiera/1/lookup_types.html#deep-merging-in-hiera--120) you may conditionally override any setting.
+
+In this example we are:
+- inheriting/preserving the __yum__ rule
+- overriding the __syslog:rotate_every__ setting
+- inheriting/preserving all other __syslog__ settings
+- disabling the __apache__ rule
+
+```yaml
+logrotate::rules:
+  syslog:
+    rotate_every    : 'day'
+  apache:
+    ensure          : 'absent'
 ```

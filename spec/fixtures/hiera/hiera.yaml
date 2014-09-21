@@ -1,0 +1,8 @@
+---
+:backends:
+  - yaml
+:hierarchy:
+  - test
+
+:yaml:
+    :datadir: 'spec/fixtures/hiera'

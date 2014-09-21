@@ -8,9 +8,16 @@ notifications:
     - tim@github.com
 env:
   - PUPPET_VERSION=2.6.18
-  - PUPPET_VERSION=2.7.24
   - PUPPET_VERSION=3.0.2
   - PUPPET_VERSION=3.1.1
   - PUPPET_VERSION=3.2.4
   - PUPPET_VERSION=3.3.2
   - PUPPET_VERSION=3.4.1
+  - PUPPET_VERSION=3.5.1
+  - PUPPET_VERSION=3.6.1
+
+matrix:
+  include:
+    - env: PUPPET_VERSION=2.7.24
+      rvm: 1.8.7
+      gemfile: Gemfile-puppet27
