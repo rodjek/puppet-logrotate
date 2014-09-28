@@ -5,6 +5,12 @@
 # rotate log files weekly
 weekly
 
+<% if @lsbmajdistrelease and (scope.function_versioncmp([@lsbmajdistrelease, '14']) >= 0) -%>
+# use the syslog group by default, since this is the owning group
+# # of /var/log/syslog.
+su root syslog
+<%- end -%>
+
 # keep 4 weeks worth of backlogs
 rotate 4
 
