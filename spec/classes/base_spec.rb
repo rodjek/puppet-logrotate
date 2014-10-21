@@ -9,7 +9,7 @@ describe 'logrotate::base' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0444',
-      'source'  => 'puppet:///modules/logrotate/etc/logrotate.conf',
+      'content' => "# THIS FILE IS AUTOMATICALLY DISTRIBUTED BY PUPPET.  ANY CHANGES WILL BE\n# OVERWRITTEN.\n\n# Default values\n\nsu root root\n\n# rotate log files weekly\nweekly\n\n# keep 4 weeks worth of backlogs\nrotate 4\n\n# create new (empty) log files after rotating old ones\ncreate\n\n# packages drop log rotation information into this directory\ninclude /etc/logrotate.d\n",
       'require' => 'Package[logrotate]',
     })
 
