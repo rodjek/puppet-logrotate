@@ -4,6 +4,17 @@
 #
 #   include logrotate::base
 class logrotate::base {
+  case $::lsbdistcodename {
+    'trusty': {
+      $logrotate_user  = 'root'
+      $logrotate_group = 'syslog'
+    }
+    default: {
+      $logrotate_user  = 'root'
+      $logrotate_group = 'root'
+    }
+  }
+
   package { 'logrotate':
     ensure => latest,
   }
@@ -18,7 +29,7 @@ class logrotate::base {
     '/etc/logrotate.conf':
       ensure  => file,
       mode    => '0444',
-      source  => 'puppet:///modules/logrotate/etc/logrotate.conf';
+      content => template('logrotate/etc/logrotate.conf.erb');
     '/etc/logrotate.d':
       ensure  => directory,
       mode    => '0755';
