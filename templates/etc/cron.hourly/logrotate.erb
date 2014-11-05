@@ -2,7 +2,7 @@
 # THIS FILE IS AUTOMATICALLY DISTRIBUTED BY PUPPET.  ANY CHANGES WILL BE
 # OVERWRITTEN.
 
-OUTPUT=$(/usr/sbin/logrotate /etc/logrotate.d/hourly 2>&1)
+OUTPUT=$(<%= scope.lookupvar('::logrotate::bin_path') -%> <%= @hourly_config_dir -%> 2>&1)
 EXITVALUE=$?
 if [ $EXITVALUE != 0 ]; then
     /usr/bin/logger -t logrotate "ALERT exited abnormally with [$EXITVALUE]"

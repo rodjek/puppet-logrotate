@@ -13,6 +13,9 @@
 #     ensure => absent,
 #   }
 class logrotate::hourly($ensure='present') {
+
+  include ::logrotate
+
   case $ensure {
     'absent': {
       $dir_ensure = $ensure
@@ -25,21 +28,41 @@ class logrotate::hourly($ensure='present') {
     }
   }
 
-  file {
-    '/etc/logrotate.d/hourly':
-      ensure => $dir_ensure,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755';
-    '/etc/cron.hourly/logrotate':
-      ensure  => $ensure,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0555',
-      source  => 'puppet:///modules/logrotate/etc/cron.hourly/logrotate',
-      require => [
-        File['/etc/logrotate.d/hourly'],
-        Package['logrotate'],
-      ];
+  File {
+    owner   => 'root',
+    group   => '0'
+  }
+
+  $hourly_config_dir = "${::logrotate::config_dir}/hourly"
+
+  file { $hourly_config_dir:
+    ensure  => $dir_ensure,
+    mode    => '0755' 
+  }
+
+  file { $::logrotate::hourly_cron_script:
+    ensure  => $ensure,
+    mode    => '0555',
+    content => template('logrotate/etc/cron.hourly/logrotate.erb'),
+    require => [
+      File[$hourly_config_dir],
+      Package[$::logrotate::package_name]
+    ]
+  }
+
+  # For O.S like AIX that does not have /etc/cron.{daily,hourly,...}
+  # feature, just create a standard cron task
+  if $::logrotate::has_cron_d_feature == false {
+    if ! defined(Cron['logrotate-hourly-task']) {
+      cron { 'logrotate-hourly-task':
+        command     => $::logrotate::hourly_cron_script,
+        minute      => ['17'],
+        hour        => absent,
+        monthday    => absent,
+        weekday     => absent,
+        user        => 'root',
+        ensure      => $ensure
+      }
+    }
   }
 }
