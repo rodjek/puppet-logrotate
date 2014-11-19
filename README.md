@@ -118,7 +118,7 @@ uncompresscmd   - The String command to be used to uncompress log files
 
 Further details about these options can be found by reading `man 8 logrotate`.
 
-### Examples
+### Examples using manifests
 
 ```
 logrotate::rule { 'messages':
@@ -137,3 +137,25 @@ logrotate::rule { 'apache':
   postrotate    => '/etc/init.d/httpd restart',
 }
 ```
+
+### Example using hiera
+```
+classes:
+  - logrotate
+
+logrotate::rules:
+  messages:
+    path:         '/var/log/messages'
+    rotate:       '5'
+    rotate_every: 'week'
+    postrotate:   '/usr/bin/killall -HUP syslogd'
+  apache:
+    path:          '/var/log/httpd/*.log'
+    rotate:        '5'
+    mail:          'test@example.com'
+    size:          '100k'
+    sharedscripts: true
+    postrotate:    '/etc/init.d/httpd restart'
+```
+This examples expect you to load the classes that are mentioned in the classes array [(This is well explained in puppetlabs documentation)](https://docs.puppetlabs.com/hiera/1/puppet.html#assigning-classes-to-nodes-with-hiera-hierainclude).
+
