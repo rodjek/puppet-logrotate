@@ -1,7 +1,7 @@
 #
 # Class: logrotate
 #
-# Manages logrotate by taking multiple rules as a hash.  
+# Manages logrotate by taking multiple rules as a hash.
 # The $rules parameter takes a hash with rules.
 #
 # Usage:
