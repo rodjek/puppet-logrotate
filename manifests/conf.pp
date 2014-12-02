@@ -272,8 +272,8 @@ define logrotate::conf (
     $_su_user  = $_su_user
     $_su_group = 'root'
   } elsif ($su_user == 'undef') and ($su_group != 'undef') {
-    $_su_user  = $_su_user
-    $_su_group = 'root'
+    $_su_user  = 'root'
+    $_su_group = $su_group
   } elsif ($su_user != 'undef') and ($su_group != 'undef') {
     $_su_user  = $_su_user
     $_su_group = $_su_group
