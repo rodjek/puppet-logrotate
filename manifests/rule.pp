@@ -370,9 +370,7 @@ define logrotate::rule(
   #############################################################################
   #
 
-  if ! defined('::logrotate') {
-    include ::logrotate
-  }
+  include ::logrotate
 
   case $rotate_every {
     'hour', 'hourly': {
