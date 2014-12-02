@@ -6,7 +6,8 @@
 #
 #   include logrotate::base
 class logrotate::base (
-    $ensure = 'latest'
+    $ensure            = 'latest',
+    $manage_cron_daily = true
 ) {
 
   case $ensure {
@@ -26,14 +27,16 @@ class logrotate::base (
   }
 
 
-  file {
-    '/etc/logrotate.d':
-      ensure  => directory,
-      mode    => '0755';
-    '/etc/cron.daily/logrotate':
-      ensure  => file,
-      mode    => '0555',
-      source  => 'puppet:///modules/logrotate/etc/cron.daily/logrotate';
+  file {'/etc/logrotate.d':
+      ensure => directory,
+      mode   => '0755',
+  }
+  if $manage_cron_daily {
+    file {'/etc/cron.daily/logrotate':
+        ensure => file,
+        mode   => '0555',
+        source => 'puppet:///modules/logrotate/etc/cron.daily/logrotate',
+    }
   }
 
   case $::osfamily {

@@ -370,11 +370,13 @@ define logrotate::rule(
   #############################################################################
   #
 
-  include logrotate::base
+  if ! defined('::logrotate') {
+    include ::logrotate
+  }
 
   case $rotate_every {
     'hour', 'hourly': {
-      include logrotate::hourly
+      include ::logrotate::hourly
       $rule_path = "/etc/logrotate.d/hourly/${name}"
     }
     default: {
@@ -388,6 +390,6 @@ define logrotate::rule(
     group   => 'root',
     mode    => '0444',
     content => template('logrotate/etc/logrotate.d/rule.erb'),
-    require => Class['logrotate::base'],
+    require => Class['logrotate'],
   }
 }
