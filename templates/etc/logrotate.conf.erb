@@ -40,6 +40,9 @@
 <% opts.each do |opt| -%>
 <%= opt %>
 <% end -%>
+<% if @su_user != 'undef' and @su_group != 'undef' -%>
+su <%= @su_user %> <%= @su_group %>
+<% end -%>
 <% if @postrotate != 'undef' -%>
 postrotate
   <%= @postrotate %>
