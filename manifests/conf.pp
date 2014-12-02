@@ -294,7 +294,7 @@ define logrotate::conf (
 #
 ####################################################################
 
-  include logrotate::base
+  include ::logrotate
 
   file { $name:
       ensure  => $ensure,
