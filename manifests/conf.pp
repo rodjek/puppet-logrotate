@@ -42,6 +42,8 @@ define logrotate::conf (
     $shred           = 'undef',
     $shredcycles     = 'undef',
     $start           = 'undef',
+    $su_user         = 'undef',
+    $su_group        = 'undef',
     $uncompresscmd   = 'undef'
 ) {
 
@@ -226,6 +228,22 @@ define logrotate::conf (
     }
   }
 
+  case $su_user {
+    'undef': {}
+    /[a-z_][a-z0-9_]{0,30}/: {}
+    default: {
+      fail("Logrotate::Rule[${name}]: su_user must match /[a-z_][a-z0-9_]{0,30}/")
+    }
+  }
+  
+  case $su_group {
+    'undef': {}
+    /[a-z_][a-z0-9_]{0,30}/: {}
+    default: {
+      fail("Logrotate::Rule[${name}]: su_group must match /[a-z_][a-z0-9_]{0,30}/")
+    }
+  }
+
   case $mailfirst {
     'undef',false: {}
     true: {
@@ -248,6 +266,17 @@ define logrotate::conf (
     default: {
       fail("Logrotate::Rule[${name}]: maillast must be a boolean")
     }
+  }
+
+  if ($su_user != 'undef') and ($su_group == 'undef') {
+    $_su_user  = $_su_user
+    $_su_group = 'root'
+  } elsif ($su_user == 'undef') and ($su_group != 'undef') {
+    $_su_user  = $_su_user
+    $_su_group = 'root'
+  } elsif ($su_user != 'undef') and ($su_group != 'undef') {
+    $_su_user  = $_su_user
+    $_su_group = $_su_group
   }
 
   if ($create_group != 'undef') and ($create_owner == 'undef') {

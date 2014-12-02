@@ -25,9 +25,6 @@ class logrotate::base (
     require => Package['logrotate'],
   }
 
-  if !defined( Logrotate::Conf['/etc/logrotate.conf'] ) {
-    logrotate::conf {'/etc/logrotate.conf': }
-  }
 
   file {
     '/etc/logrotate.d':
@@ -49,6 +46,10 @@ class logrotate::base (
     'SuSE': {
       include logrotate::defaults::suse
     }
-    default: { }
+    default: { 
+      if !defined( Logrotate::Conf['/etc/logrotate.conf'] ) {
+        logrotate::conf {'/etc/logrotate.conf': }
+      }
+    }
   }
 }

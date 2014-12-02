@@ -5,6 +5,18 @@
 #   include logrotate::defaults::debian
 class logrotate::defaults::debian {
 
+  if !defined( Logrotate::Conf['/etc/logrotate.conf'] ) {
+    case $::lsbdistcodename {
+      'trusty': {
+        logrotate::conf {'/etc/logrotate.conf': 
+          su_group => 'syslog'
+        }
+      }
+      default: {
+        logrotate::conf {'/etc/logrotate.conf': }
+      }
+  }
+
   logrotate::rule {
     'wtmp':
       path        => '/var/log/wtmp',

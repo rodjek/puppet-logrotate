@@ -4,6 +4,11 @@
 #
 #   include logrotate::defaults::suse
 class logrotate::defaults::suse {
+
+  if !defined( Logrotate::Conf['/etc/logrotate.conf'] ) {
+    logrotate::conf {'/etc/logrotate.conf': }
+  }
+
   Logrotate::Rule {
     missingok    => true,
     rotate_every => 'month',
