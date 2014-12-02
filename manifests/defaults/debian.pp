@@ -15,6 +15,7 @@ class logrotate::defaults::debian {
       default: {
         logrotate::conf {'/etc/logrotate.conf': }
       }
+    }
   }
 
   logrotate::rule {
