@@ -42,6 +42,9 @@ define logrotate::conf (
     $shred           = 'undef',
     $shredcycles     = 'undef',
     $start           = 'undef',
+    $su              = false,
+    $su_owner        = 'undef',
+    $su_group        = 'undef',
     $uncompresscmd   = 'undef'
 ) {
 
@@ -49,14 +52,14 @@ define logrotate::conf (
 # SANITY CHECK VALUES
 
   if $name !~ /^[a-zA-Z0-9\._\/-]+$/ {
-    fail("Logrotate::Rule[${name}]: namevar must be alphanumeric")
+    fail("Logrotate::Conf[${name}]: namevar must be alphanumeric")
   }
 
   case $ensure {
     'present','file': {}
     'absent': {}
     default: {
-      fail("Logrotate::Rule[${name}]: invalid ensure value")
+      fail("Logrotate::Conf[${name}]: invalid ensure value")
     }
   }
 
@@ -65,7 +68,7 @@ define logrotate::conf (
     true: { $_compress = 'compress' }
     false: { $_compress = 'nocompress' }
     default: {
-      fail("Logrotate::Rule[${name}]: compress must be a boolean")
+      fail("Logrotate::Conf[${name}]: compress must be a boolean")
     }
   }
 
@@ -74,7 +77,7 @@ define logrotate::conf (
     true: { $_copy = 'copy' }
     false: { $_copy = 'nocopy' }
     default: {
-      fail("Logrotate::Rule[${name}]: copy must be a boolean")
+      fail("Logrotate::Conf[${name}]: copy must be a boolean")
     }
   }
 
@@ -83,7 +86,7 @@ define logrotate::conf (
     true: { $_copytruncate = 'copytruncate' }
     false: { $_copytruncate = 'nocopytruncate' }
     default: {
-      fail("Logrotate::Rule[${name}]: copytruncate must be a boolean")
+      fail("Logrotate::Conf[${name}]: copytruncate must be a boolean")
     }
   }
 
@@ -92,7 +95,7 @@ define logrotate::conf (
     true: { $_create = 'create' }
     false: { $_create = 'nocreate' }
     default: {
-      fail("Logrotate::Rule[${name}]: create must be a boolean")
+      fail("Logrotate::Conf[${name}]: create must be a boolean")
     }
   }
 
@@ -101,7 +104,7 @@ define logrotate::conf (
     true: { $_delaycompress = 'delaycompress' }
     false: { $_delaycompress = 'nodelaycompress' }
     default: {
-      fail("Logrotate::Rule[${name}]: delaycompress must be a boolean")
+      fail("Logrotate::Conf[${name}]: delaycompress must be a boolean")
     }
   }
 
@@ -110,7 +113,7 @@ define logrotate::conf (
     true: { $_dateext = 'dateext' }
     false: { $_dateext = 'nodateext' }
     default: {
-      fail("Logrotate::Rule[${name}]: dateext must be a boolean")
+      fail("Logrotate::Conf[${name}]: dateext must be a boolean")
     }
   }
 
@@ -127,7 +130,7 @@ define logrotate::conf (
     true: { $_missingok = 'missingok' }
     false: { $_missingok = 'nomissingok' }
     default: {
-      fail("Logrotate::Rule[${name}]: missingok must be a boolean")
+      fail("Logrotate::Conf[${name}]: missingok must be a boolean")
     }
   }
 
@@ -144,7 +147,7 @@ define logrotate::conf (
     true: { $_sharedscripts = 'sharedscripts' }
     false: { $_sharedscripts = 'nosharedscripts' }
     default: {
-      fail("Logrotate::Rule[${name}]: sharedscripts must be a boolean")
+      fail("Logrotate::Conf[${name}]: sharedscripts must be a boolean")
     }
   }
 
@@ -153,7 +156,7 @@ define logrotate::conf (
     true: { $_shred = 'shred' }
     false: { $_shred = 'noshred' }
     default: {
-      fail("Logrotate::Rule[${name}]: shred must be a boolean")
+      fail("Logrotate::Conf[${name}]: shred must be a boolean")
     }
   }
 
@@ -162,7 +165,7 @@ define logrotate::conf (
     true: { $_ifempty = 'ifempty' }
     false: { $_ifempty = 'notifempty' }
     default: {
-      fail("Logrotate::Rule[${name}]: ifempty must be a boolean")
+      fail("Logrotate::Conf[${name}]: ifempty must be a boolean")
     }
   }
 
@@ -174,7 +177,7 @@ define logrotate::conf (
     'year': { $_rotate_every = 'yearly' }
     'daily', 'weekly','monthly','yearly': { $_rotate_every = $rotate_every }
     default: {
-      fail("Logrotate::Rule[${name}]: invalid rotate_every value")
+      fail("Logrotate::Conf[${name}]: invalid rotate_every value")
     }
   }
 
@@ -182,7 +185,7 @@ define logrotate::conf (
     'undef': {}
     /^\d+$/: {}
     default: {
-      fail("Logrotate::Rule[${name}]: maxage must be an integer")
+      fail("Logrotate::Conf[${name}]: maxage must be an integer")
     }
   }
 
@@ -190,7 +193,7 @@ define logrotate::conf (
     'undef': {}
     /^\d+[kMG]?$/: {}
     default: {
-      fail("Logrotate::Rule[${name}]: minsize must match /\\d+[kMG]?/")
+      fail("Logrotate::Conf[${name}]: minsize must match /\\d+[kMG]?/")
     }
   }
 
@@ -198,7 +201,7 @@ define logrotate::conf (
     'undef': {}
     /^\d+$/: {}
     default: {
-      fail("Logrotate::Rule[${name}]: rotate must be an integer")
+      fail("Logrotate::Conf[${name}]: rotate must be an integer")
     }
   }
 
@@ -206,7 +209,7 @@ define logrotate::conf (
     'undef': {}
     /^\d+[kMG]?$/: {}
     default: {
-      fail("Logrotate::Rule[${name}]: size must match /\\d+[kMG]?/")
+      fail("Logrotate::Conf[${name}]: size must match /\\d+[kMG]?/")
     }
   }
 
@@ -214,7 +217,7 @@ define logrotate::conf (
     'undef': {}
     /^\d+$/: {}
     default: {
-      fail("Logrotate::Rule[${name}]: shredcycles must be an integer")
+      fail("Logrotate::Conf[${name}]: shredcycles must be an integer")
     }
   }
 
@@ -222,21 +225,39 @@ define logrotate::conf (
     'undef': {}
     /^\d+$/: {}
     default: {
-      fail("Logrotate::Rule[${name}]: start must be an integer")
+      fail("Logrotate::Conf[${name}]: start must be an integer")
     }
+  }
+
+  case $su {
+    'undef',false: {}
+    true: { $sane_su = 'su' }
+    default: {
+      fail("Logrotate::Conf[${name}]: su must be a boolean")
+    }
+  }
+
+  # su requires at least su_owner
+  if ($su == true) and ($su_owner == 'undef') {
+    fail("Logrotate::Conf[${name}]: su requires su_owner and optional su_group")
+  }
+
+  # su should be set to true if su_owner exists
+  if ($su_owner != 'undef') and ($su != true) {
+    fail("Logrotate::Conf[${name}]: su_owner requires su")
   }
 
   case $mailfirst {
     'undef',false: {}
     true: {
       if $maillast == true {
-        fail("Logrotate::Rule[${name}]: Can't set both mailfirst and maillast")
+        fail("Logrotate::Conf[${name}]: Can't set both mailfirst and maillast")
       }
 
       $_mailfirst = 'mailfirst'
     }
     default: {
-      fail("Logrotate::Rule[${name}]: mailfirst must be a boolean")
+      fail("Logrotate::Conf[${name}]: mailfirst must be a boolean")
     }
   }
 
@@ -246,20 +267,20 @@ define logrotate::conf (
       $_maillast = 'maillast'
     }
     default: {
-      fail("Logrotate::Rule[${name}]: maillast must be a boolean")
+      fail("Logrotate::Conf[${name}]: maillast must be a boolean")
     }
   }
 
   if ($create_group != 'undef') and ($create_owner == 'undef') {
-    fail("Logrotate::Rule[${name}]: create_group requires create_owner")
+    fail("Logrotate::Conf[${name}]: create_group requires create_owner")
   }
 
   if ($create_owner != 'undef') and ($create_mode == 'undef') {
-    fail("Logrotate::Rule[${name}]: create_owner requires create_mode")
+    fail("Logrotate::Conf[${name}]: create_owner requires create_mode")
   }
 
   if ($create_mode != 'undef') and ($create != true) {
-    fail("Logrotate::Rule[${name}]: create_mode requires create")
+    fail("Logrotate::Conf[${name}]: create_mode requires create")
   }
 
 #
