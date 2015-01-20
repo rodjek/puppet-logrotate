@@ -19,6 +19,14 @@
     end
   end
 
+  if scope.to_hash.has_key?('sane_su')
+    if @sane_su == 'su'
+      opts << [@sane_su, @su_owner, @su_group].reject { |r|
+        r == 'undef'
+      }.join(' ')
+    end
+  end
+
   [
     '_compress', '_copy', '_copytruncate', '_delaycompress', '_dateext',
     '_mail', '_missingok', '_olddir', '_sharedscripts', '_ifempty', '_maillast',
