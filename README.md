@@ -13,6 +13,13 @@ exceptions:
  * Instead of 'daily', 'weekly', 'monthly' or 'yearly', there is a
    `rotate_every` parameter (see documentation below).
 
+## logrotate::conf
+
+You may, optionally, define logrotate defaults using this defined type.
+Parameters are the same as those for logrotate::rule.
+Using this type will automatically include a private class that will install
+and configure logrotate for you.
+
 ## logrotate::rule
 
 The only thing you'll need to deal with, this type configures a logrotate rule.
@@ -32,7 +39,7 @@ compressext     - The extention String to be appended to the rotated log files
                   after they have been compressed (optional).
 compressoptions - A String of command line options to be passed to the
                   compression program specified in `compresscmd` (optional).
-copy            - A Boolean specifying whether logrotate should just take a 
+copy            - A Boolean specifying whether logrotate should just take a
                   copy of the log file and not touch the original (optional).
 copytruncate    - A Boolean specifying whether logrotate should truncate the
                   original log file after taking a copy (optional).
@@ -56,7 +63,7 @@ extension       - Log files with this extension String are allowed to keep it
                   after rotation (optional).
 ifempty         - A Boolean specifying whether the log file should be rotated
                   even if it is empty (optional).
-mail            - The email address String that logs that are about to be 
+mail            - The email address String that logs that are about to be
                   rotated out of existence are emailed to (optional).
 mailfirst       - A Boolean that when used with `mail` has logrotate email the
                   just rotated file rather than the about to expire file
@@ -74,17 +81,17 @@ missingok       - A Boolean specifying whether logrotate should ignore missing
                   log files or issue an error (optional).
 olddir          - A String path to a directory that rotated logs should be
                   moved to (optional).
-postrotate      - A command String or an Array of Strings that should be
-                  executed by /bin/sh after the log file is rotated (optional).
-prerotate       - A command String or an Array of Strings that should be
-                  executed by /bin/sh before the log file is rotated and only
-                  if it will be rotated (optional).
-firstaction     - A command String or an Array of Strings that should be
-                  executed by /bin/sh once before all log files that match the
-                  wildcard pattern are rotated (optional).
-lastaction      - A command String or an Array of Strings that should be
-                  executed by /bin/sh once after all the log files that match
-                  the wildcard pattern are rotated (optional).
+postrotate      - A command String that should be executed by /bin/sh after
+                  the log file is rotated (optional).
+prerotate       - A command String that should be executed by /bin/sh before
+                  the log file is rotated and only if it will be rotated
+                  (optional).
+firstaction     - A command String that should be executed by /bin/sh once
+                  before all log files that match the wildcard pattern are
+                  rotated (optional).
+lastaction      - A command String that should be execute by /bin/sh once
+                  after all the log files that match the wildcard pattern are
+                  rotated (optional).
 rotate          - The Integer number of rotated log files to keep on disk
                   (optional).
 rotate_every    - How often the log files should be rotated as a String.
@@ -94,7 +101,7 @@ rotate_every    - How often the log files should be rotated as a String.
 size            - The String size a log file has to reach before it will be
                   rotated (optional).  The default units are bytes, append k,
                   M or G for kilobytes, megabytes or gigabytes respectively.
-sharedscripts   - A Boolean specifying whether logrotate should run the 
+sharedscripts   - A Boolean specifying whether logrotate should run the
                   postrotate and prerotate scripts for each matching file or
                   just once (optional).
 shred           - A Boolean specifying whether logs should be deleted with
@@ -121,6 +128,13 @@ Further details about these options can be found by reading `man 8 logrotate`.
 ### Examples
 
 ```
+logrotate::conf { '/etc/logrotate.conf':
+  rotate       => 10,
+  rotate_every => 'week',
+  ifempty      => true,
+  dateext      => true,
+}
+
 logrotate::rule { 'messages':
   path         => '/var/log/messages',
   rotate       => 5,
