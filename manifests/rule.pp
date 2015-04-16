@@ -30,7 +30,8 @@
 # dateformat      - The format String to be used for `dateext` (optional).
 #                   Valid specifiers are '%Y', '%m', '%d' and '%s'.
 # dateyesterday   - A Boolean specifying whether to use yesterday's date instead
-#                   of today's date to create the `dateext` extension (optional).
+#                   of today's date to create the `dateext` extension
+#                   (optional).
 # delaycompress   - A Boolean specifying whether compression of the rotated
 #                   log file should be delayed until the next logrotate run
 #                   (optional).
