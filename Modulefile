@@ -1,7 +1,0 @@
-name 'rodjek-logrotate'
-version '1.1.1'
-source 'https://github.com/rodjek/puppet-logrotate'
-license 'MIT'
-summary 'Logrotate module'
-description 'Manage logrotate on your servers with Puppet'
-project_page 'https://github.com/rodjek/puppet-logrotate'
