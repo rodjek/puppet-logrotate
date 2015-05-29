@@ -3,9 +3,11 @@
 # Examples
 #
 #   include logrotate::base
-class logrotate::base {
+class logrotate::base (
+  $package_ensure = 'latest',
+) {
   package { 'logrotate':
-    ensure => latest,
+    ensure => $package_ensure,
   }
 
   File {
