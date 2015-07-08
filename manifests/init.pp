@@ -1,4 +1,5 @@
 #
+#
 class logrotate (
   $ensure            = 'latest',
   $hieramerge        = false,
