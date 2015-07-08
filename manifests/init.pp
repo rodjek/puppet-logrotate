@@ -18,8 +18,6 @@ class logrotate (
   }
 
   File {
-    owner   => 'root',
-    group   => 'root',
     require => Package[$package],
   }
 
@@ -35,22 +33,6 @@ class logrotate (
     }
   }
 
-  case $::osfamily {
-    'Debian': {
-      include logrotate::defaults::debian
-    }
-    'RedHat': {
-      include logrotate::defaults::redhat
-    }
-    'SuSE': {
-      include logrotate::defaults::suse
-    }
-    default: {
-      if !defined( Logrotate::Conf['/etc/logrotate.conf'] ) {
-        logrotate::conf {'/etc/logrotate.conf': }
-      }
-    }
-  }
 
   if $hieramerge {
     $_rules = hiera_hash('logrotate::rules', $rules)
