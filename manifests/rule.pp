@@ -29,6 +29,10 @@
 #                   (optional).
 # dateformat      - The format String to be used for `dateext` (optional).
 #                   Valid specifiers are '%Y', '%m', '%d' and '%s'.
+# dateyesterday   - A Boolean specifying whether rotated log files should use
+#                   yesterday's date to create the dateext extension, so that
+#                   every rotated log file has a date in its name that is the
+#                   same as the timestamps within it. (optional).
 # delaycompress   - A Boolean specifying whether compression of the rotated
 #                   log file should be delayed until the next logrotate run
 #                   (optional).
@@ -131,6 +135,7 @@ define logrotate::rule(
                         $create_group    = 'undef',
                         $dateext         = 'undef',
                         $dateformat      = 'undef',
+                        $dateyesterday   = 'undef',
                         $delaycompress   = 'undef',
                         $extension       = 'undef',
                         $ifempty         = 'undef',
@@ -228,6 +233,14 @@ define logrotate::rule(
     false: { $sane_dateext = 'nodateext' }
     default: {
       fail("Logrotate::Rule[${name}]: dateext must be a boolean")
+    }
+  }
+
+  case $dateyesterday {
+    'undef',false: {}
+    true: { $sane_dateyesterday = 'dateyesterday' }
+    default: {
+      fail("Logrotate::Rule[${name}]: dateyesterday must be a boolean")
     }
   }
 

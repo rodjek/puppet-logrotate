@@ -360,6 +360,41 @@ describe 'logrotate::rule' do
     end
 
     ###########################################################################
+    # DATEYESTERDAY
+    context 'and dateyesterday => true' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :dateyesterday => true}
+      }
+
+      it do
+        should contain_file('/etc/logrotate.d/test') \
+          .with_content(/^  dateyesterday$/)
+      end
+    end
+
+    context 'and dateyesterday => false' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :dateyesterday => false}
+      }
+
+      it do
+        should_not contain_file('/etc/logrotate.d/test') \
+          .with_content(/^  dateyesterday$/)
+      end
+    end
+
+    context 'and dateyesterday => undef' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :dateyesterday => 'undef'}
+      }
+
+      it do
+        should_not contain_file('/etc/logrotate.d/test') \
+          .with_content(/^  dateyesterday$/)
+      end
+    end
+
+    ###########################################################################
     # DELAYCOMPRESS
     context 'and delaycompress => true' do
       let(:params) {

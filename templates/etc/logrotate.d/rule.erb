@@ -31,7 +31,7 @@
   [
     'compress', 'copy', 'copytruncate', 'delaycompress', 'dateext',
     'mail', 'missingok', 'olddir', 'sharedscripts', 'ifempty', 'maillast',
-    'mailfirst', 'shred', 'rotate_every'
+    'mailfirst', 'shred', 'rotate_every', 'dateyesterday'
   ].each do |bool|
     opts << scope.to_hash["sane_#{bool}"] if scope.to_hash.has_key?("sane_#{bool}")
   end
