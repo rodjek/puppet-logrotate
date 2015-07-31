@@ -427,6 +427,5 @@ define logrotate::rule(
     group   => 'root',
     mode    => '0444',
     content => template('logrotate/etc/logrotate.d/rule.erb'),
-    require => Class['logrotate::base'],
   }
 }
