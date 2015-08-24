@@ -25,6 +25,15 @@ class logrotate::hourly($ensure='present') {
     }
   }
 
+  case $::osfamily {
+    'SuSE': {
+      $logrotate_file = 'logrotate.sles'
+    }
+    default: {
+      $logrotate_file = 'logrotate'
+    }
+  }
+
   file {
     '/etc/logrotate.d/hourly':
       ensure => $dir_ensure,
@@ -36,10 +45,11 @@ class logrotate::hourly($ensure='present') {
       owner   => 'root',
       group   => 'root',
       mode    => '0555',
-      source  => 'puppet:///modules/logrotate/etc/cron.hourly/logrotate',
+      source  => "puppet:///modules/logrotate/etc/cron.hourly/${logrotate_file}",
       require => [
         File['/etc/logrotate.d/hourly'],
         Package['logrotate'],
       ];
   }
+
 }

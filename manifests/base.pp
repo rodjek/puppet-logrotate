@@ -14,6 +14,24 @@ class logrotate::base {
     require => Package['logrotate'],
   }
 
+  case $::osfamily {
+    'Debian': {
+      include logrotate::defaults::debian
+      $logrotate_file = 'logrotate'
+    }
+    'RedHat': {
+      include logrotate::defaults::redhat
+      $logrotate_file = 'logrotate'
+    }
+    'SuSE': {
+      include logrotate::defaults::suse
+      $logrotate_file = 'logrotate.sles'
+    }
+    default: {
+      $logrotate_file = 'logrotate'
+    }
+  }
+
   file {
     '/etc/logrotate.conf':
       ensure  => file,
@@ -25,19 +43,7 @@ class logrotate::base {
     '/etc/cron.daily/logrotate':
       ensure  => file,
       mode    => '0555',
-      source  => 'puppet:///modules/logrotate/etc/cron.daily/logrotate';
+      source  => "puppet:///modules/logrotate/etc/cron.daily/${logrotate_file}";
   }
 
-  case $::osfamily {
-    'Debian': {
-      include logrotate::defaults::debian
-    }
-    'RedHat': {
-      include logrotate::defaults::redhat
-    }
-    'SuSE': {
-      include logrotate::defaults::suse
-    }
-    default: { }
-  }
 }
