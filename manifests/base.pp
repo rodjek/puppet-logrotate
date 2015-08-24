@@ -14,20 +14,6 @@ class logrotate::base {
     require => Package['logrotate'],
   }
 
-  file {
-    '/etc/logrotate.conf':
-      ensure  => file,
-      mode    => '0444',
-      source  => 'puppet:///modules/logrotate/etc/logrotate.conf';
-    '/etc/logrotate.d':
-      ensure  => directory,
-      mode    => '0755';
-    '/etc/cron.daily/logrotate':
-      ensure  => file,
-      mode    => '0555',
-      source  => "puppet:///modules/logrotate/etc/cron.daily/${logrotate_file}";
-  }
-
   case $::osfamily {
     'Debian': {
       include logrotate::defaults::debian
@@ -44,6 +30,20 @@ class logrotate::base {
     default: {
       $logrotate_file = 'logrotate'
     }
+  }
+
+  file {
+    '/etc/logrotate.conf':
+      ensure  => file,
+      mode    => '0444',
+      source  => 'puppet:///modules/logrotate/etc/logrotate.conf';
+    '/etc/logrotate.d':
+      ensure  => directory,
+      mode    => '0755';
+    '/etc/cron.daily/logrotate':
+      ensure  => file,
+      mode    => '0555',
+      source  => "puppet:///modules/logrotate/etc/cron.daily/${logrotate_file}";
   }
 
 }
