@@ -4,9 +4,9 @@
 #
 #   include logrotate::base
 class logrotate::base {
-  package { 'logrotate':
-    ensure => latest,
-  }
+  # package { 'logrotate':
+  #   ensure => latest,
+  # }
 
   File {
     owner   => 'root',
