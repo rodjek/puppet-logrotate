@@ -14,18 +14,34 @@ class logrotate::base {
     require => Package['logrotate'],
   }
 
+
+  case $::osfamily {
+    'SuSE': {
+      $cfg_mode = '0644',
+      $cfg_file = 'puppet:///modules/logrotate/etc/logrotate.conf.SuSE',
+      $cron_mode = '0755',
+      $cron_file = 'puppet:///modules/logrotate/etc/cron.daily/logrotate.SuSE'
+    }
+    default: {
+      $cfg_mode = '0444',
+      $cfg_file = 'puppet:///modules/logrotate/etc/logrotate.conf',
+      $cron_mode = '0555',
+      $cron_file = 'puppet:///modules/logrotate/etc/cron.daily/logrotate'
+    }
+  }
+
   file {
     '/etc/logrotate.conf':
       ensure  => file,
-      mode    => '0444',
-      source  => 'puppet:///modules/logrotate/etc/logrotate.conf';
+      mode    => $cfg_mode,
+      source  => $cfg_file;
     '/etc/logrotate.d':
       ensure  => directory,
       mode    => '0755';
     '/etc/cron.daily/logrotate':
       ensure  => file,
-      mode    => '0555',
-      source  => 'puppet:///modules/logrotate/etc/cron.daily/logrotate';
+      mode    => $cron_mode,
+      source  => $cron_file;
   }
 
   case $::osfamily {
