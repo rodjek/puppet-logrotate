@@ -17,7 +17,7 @@ class logrotate::defaults::suse {
       dateext      => true,
       maxage       => 365,
       rotate       => 4,
-      size         => '+4096k',
+      size         => '4096k',
       ifempty      => false,
       missingok    => true,
       copytruncate => true,
