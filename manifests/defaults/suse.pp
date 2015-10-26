@@ -13,6 +13,7 @@ class logrotate::defaults::suse {
   logrotate::rule {
     'wtmp':
       path         => '/var/log/wtmp',
+      create_mode  => '0644',
       compress     => true, 
       dateext      => true,
       maxage       => 365,
