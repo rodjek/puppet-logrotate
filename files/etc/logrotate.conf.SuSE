@@ -32,7 +32,7 @@ include /etc/logrotate.d
 #/var/log/wtmp {
 #    monthly
 #    create 0664 root utmp
-#      minsize 1M
+#	minsize 1M
 #    rotate 1
 #}
 #
@@ -44,4 +44,3 @@ include /etc/logrotate.d
 #}
 
 # system-specific logs may be also be configured here.
-
