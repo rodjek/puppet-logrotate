@@ -4,8 +4,8 @@
 
 # exit immediately if there is another instance running
 if checkproc /usr/sbin/logrotate; then
-        /bin/logger -t logrotate "ALERT another instance of logrotate is running - exiting"
-        exit 1;
+       /bin/logger -t logrotate "ALERT another instance of logrotate is running - exiting"
+       exit 1;
 fi;
 
 TMPF=`mktemp /tmp/logrotate.XXXXXXXXXX`
@@ -23,4 +23,3 @@ fi
 
 rm -f $TMPF
 exit 0
-

@@ -6,10 +6,10 @@
 class logrotate::defaults::suse {
   Logrotate::Rule {
     missingok    => true,
-    create       => true,
-    create_owner => 'root',
-    create_group => 'root',
-    create_mode  => '0644',
+    #create       => true,
+    #create_owner => 'root',
+    #create_group => 'root',
+    #create_mode  => '0644',
   }
 
   logrotate::rule {
@@ -21,7 +21,6 @@ class logrotate::defaults::suse {
       rotate       => 4,
       size         => '4096k',
       ifempty      => false,
-      missingok    => true,
       copytruncate => true,
   }
 }
