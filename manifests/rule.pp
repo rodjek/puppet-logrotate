@@ -421,11 +421,22 @@ define logrotate::rule(
     }
   }
 
+
+  case $::osfamily {
+    'SuSE': {
+      $cfg_mode = '0644'
+    }
+    default: {
+      $cfg_mode = '0444'
+    }
+  }
+
+
   file { $rule_path:
     ensure  => $ensure,
     owner   => 'root',
     group   => 'root',
-    mode    => '0444',
+    mode    => $cfg_mode,
     content => template('logrotate/etc/logrotate.d/rule.erb'),
     require => Class['logrotate::base'],
   }
