@@ -17,15 +17,15 @@ class logrotate::base {
 
   case $::osfamily {
     'SuSE': {
-      $cfg_mode = '0644',
-      $cfg_file = 'puppet:///modules/logrotate/etc/logrotate.conf.SuSE',
-      $cron_mode = '0755',
+      $cfg_mode = '0644'
+      $cfg_file = 'puppet:///modules/logrotate/etc/logrotate.conf.SuSE'
+      $cron_mode = '0755'
       $cron_file = 'puppet:///modules/logrotate/etc/cron.daily/logrotate.SuSE'
     }
     default: {
-      $cfg_mode = '0444',
-      $cfg_file = 'puppet:///modules/logrotate/etc/logrotate.conf',
-      $cron_mode = '0555',
+      $cfg_mode = '0444'
+      $cfg_file = 'puppet:///modules/logrotate/etc/logrotate.conf'
+      $cron_mode = '0555'
       $cron_file = 'puppet:///modules/logrotate/etc/cron.daily/logrotate'
     }
   }
