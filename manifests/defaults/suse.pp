@@ -6,14 +6,15 @@
 class logrotate::defaults::suse {
   Logrotate::Rule {
     missingok    => true,
+    create       => true,
     create_owner => 'root',
     create_group => 'root',
+    create_mode  => '0644',
   }
 
   logrotate::rule {
     'wtmp':
       path         => '/var/log/wtmp',
-      create_mode  => '0644',
       compress     => true, 
       dateext      => true,
       maxage       => 365,
