@@ -396,7 +396,7 @@ define logrotate::rule (
     fail("Logrotate::Rule[${name}]: su_owner requires su")
   }
 
-  include ::logrotate::base
+  include ::logrotate
 
   case $rotate_every {
     'hour', 'hourly': {
@@ -422,6 +422,6 @@ define logrotate::rule (
     group   => 'root',
     mode    => '0444',
     content => template('logrotate/etc/logrotate.d/rule.erb'),
-    require => Class['logrotate::base'],
+    require => Class['logrotate'],
   }
 }

@@ -14,7 +14,7 @@ describe 'logrotate::rule' do
 
     let(:params) { {:path => '/var/log/foo.log'} }
     it do
-      should contain_class('logrotate::base')
+      should contain_class('logrotate')
       should contain_file('/etc/logrotate.d/test').with({
         'owner'   => 'root',
         'group'   => 'root',

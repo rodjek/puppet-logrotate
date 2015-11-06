@@ -1,6 +1,6 @@
 require 'spec_helper'
+describe 'logrotate' do
 
-describe 'logrotate::base' do
   it do
     should contain_package('logrotate').with_ensure('latest')
 
