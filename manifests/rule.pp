@@ -116,50 +116,48 @@
 #     rotate       => 3,
 #     postrotate   => '/etc/init.d/nginx restart',
 #   }
-define logrotate::rule(
-                        $path            = 'undef',
-                        $ensure          = 'present',
-                        $compress        = 'undef',
-                        $compresscmd     = 'undef',
-                        $compressext     = 'undef',
-                        $compressoptions = 'undef',
-                        $copy            = 'undef',
-                        $copytruncate    = 'undef',
-                        $create          = 'undef',
-                        $create_mode     = 'undef',
-                        $create_owner    = 'undef',
-                        $create_group    = 'undef',
-                        $dateext         = 'undef',
-                        $dateformat      = 'undef',
-                        $delaycompress   = 'undef',
-                        $extension       = 'undef',
-                        $ifempty         = 'undef',
-                        $mail            = 'undef',
-                        $mailfirst       = 'undef',
-                        $maillast        = 'undef',
-                        $maxage          = 'undef',
-                        $minsize         = 'undef',
-                        $missingok       = 'undef',
-                        $olddir          = 'undef',
-                        $postrotate      = 'undef',
-                        $prerotate       = 'undef',
-                        $firstaction     = 'undef',
-                        $lastaction      = 'undef',
-                        $rotate          = 'undef',
-                        $rotate_every    = 'undef',
-                        $size            = 'undef',
-                        $sharedscripts   = 'undef',
-                        $shred           = 'undef',
-                        $shredcycles     = 'undef',
-                        $start           = 'undef',
-                        $su              = 'undef',
-                        $su_owner        = 'undef',
-                        $su_group        = 'undef',
-                        $uncompresscmd   = 'undef'
-                        ) {
-
-  #############################################################################
-  # SANITY CHECK VALUES
+#
+define logrotate::rule (
+  $path            = 'undef',
+  $ensure          = 'present',
+  $compress        = 'undef',
+  $compresscmd     = 'undef',
+  $compressext     = 'undef',
+  $compressoptions = 'undef',
+  $copy            = 'undef',
+  $copytruncate    = 'undef',
+  $create          = 'undef',
+  $create_mode     = 'undef',
+  $create_owner    = 'undef',
+  $create_group    = 'undef',
+  $dateext         = 'undef',
+  $dateformat      = 'undef',
+  $delaycompress   = 'undef',
+  $extension       = 'undef',
+  $ifempty         = 'undef',
+  $mail            = 'undef',
+  $mailfirst       = 'undef',
+  $maillast        = 'undef',
+  $maxage          = 'undef',
+  $minsize         = 'undef',
+  $missingok       = 'undef',
+  $olddir          = 'undef',
+  $postrotate      = 'undef',
+  $prerotate       = 'undef',
+  $firstaction     = 'undef',
+  $lastaction      = 'undef',
+  $rotate          = 'undef',
+  $rotate_every    = 'undef',
+  $size            = 'undef',
+  $sharedscripts   = 'undef',
+  $shred           = 'undef',
+  $shredcycles     = 'undef',
+  $start           = 'undef',
+  $su              = 'undef',
+  $su_owner        = 'undef',
+  $su_group        = 'undef',
+  $uncompresscmd   = 'undef'
+) {
 
   if $name !~ /^[a-zA-Z0-9\._-]+$/ {
     fail("Logrotate::Rule[${name}]: namevar must be alphanumeric")
@@ -398,14 +396,11 @@ define logrotate::rule(
     fail("Logrotate::Rule[${name}]: su_owner requires su")
   }
 
-  #############################################################################
-  #
-
-  include logrotate::base
+  include ::logrotate::base
 
   case $rotate_every {
     'hour', 'hourly': {
-      include logrotate::hourly
+      include ::logrotate::hourly
       $rule_path = "/etc/logrotate.d/hourly/${name}"
 
       file { "/etc/logrotate.d/${name}":

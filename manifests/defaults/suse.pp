@@ -2,8 +2,10 @@
 #
 # Examples
 #
-#   include logrotate::defaults::suse
+#   include ::logrotate::defaults::suse
+#
 class logrotate::defaults::suse {
+
   Logrotate::Rule {
     missingok    => true,
     rotate_every => 'month',
@@ -15,14 +17,15 @@ class logrotate::defaults::suse {
     size         => '400k'
   }
 
-  logrotate::rule {
-    'wtmp':
-      path         => '/var/log/wtmp',
-      create_mode  => '0664',
-      missingok    => false;
-    'btmp':
+  logrotate::rule { 'wtmp':
+      path        => '/var/log/wtmp',
+      create_mode => '0664',
+      missingok   => false,
+  }
+
+  logrotate::rule { 'btmp':
       path         => '/var/log/btmp',
       create_mode  => '0600',
-      create_group => 'root';
+      create_group => 'root',
   }
 }
