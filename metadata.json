@@ -1,0 +1,40 @@
+{
+  "name": "rodjek-logrotate",
+  "version": "1.1.1",
+  "author": "rodjek",
+  "summary": "Logrotate module",
+  "license": "MIT",
+  "source": "https://github.com/rodjek/puppet-logrotate",
+  "project_page": "https://github.com/rodjek/puppet-logrotate",
+  "issues_url": "https://github.com/rodjek/puppet-logrotate/issues",
+  "description": "Manage logrotate on your servers with Puppet",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian"
+    },
+    {
+      "operatingsystem": "RedHat"
+    },
+    {
+      "operatingsystem": "CentOS"
+    },
+    {
+      "operatingsystem": "OracleLinux"
+    },
+    {
+      "operatingsystem": "Scientific"
+    },
+    {
+      "operatingsystem": "SLES"
+    },
+    {
+      "operatingsystem": "SLED"
+    },
+    {
+      "operatingsystem": "Ubuntu"
+    }
+  ],
+  "dependencies": [
+    { "name": "puppetlabs/stdlib","version_requirement": ">= 4.6.0 < 6.0.0" }
+  ]
+}
