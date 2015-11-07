@@ -15,7 +15,7 @@ class logrotate {
   file { '/etc/logrotate.conf':
       ensure => file,
       mode   => '0444',
-      source => 'puppet:///modules/logrotate/etc/logrotate.conf',
+      source => 'puppet:///modules/logrotate/logrotate.conf',
   }
 
   file { '/etc/logrotate.d':
@@ -26,7 +26,7 @@ class logrotate {
   file { '/etc/cron.daily/logrotate':
       ensure => file,
       mode   => '0555',
-      source => 'puppet:///modules/logrotate/etc/cron.daily/logrotate',
+      source => 'puppet:///modules/logrotate/cron.daily/logrotate',
   }
 
   case $::osfamily {

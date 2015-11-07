@@ -14,7 +14,7 @@ class logrotate::defaults::suse {
     create_group => 'utmp',
     rotate       => '99',
     maxage       => '365',
-    size         => '400k'
+    size         => '400k',
   }
 
   logrotate::rule { 'wtmp':

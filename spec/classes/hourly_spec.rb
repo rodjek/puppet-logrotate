@@ -17,7 +17,7 @@ describe 'logrotate::hourly' do
         'owner'   => 'root',
         'group'   => 'root',
         'mode'    => '0555',
-        'source'  => 'puppet:///modules/logrotate/etc/cron.hourly/logrotate',
+        'source'  => 'puppet:///modules/logrotate/cron.hourly/logrotate',
         'require' => [
           'File[/etc/logrotate.d/hourly]',
           'Package[logrotate]',
