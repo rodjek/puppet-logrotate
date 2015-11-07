@@ -3,11 +3,21 @@
   "version": "1.1.1",
   "author": "rodjek",
   "summary": "Logrotate module",
+  "description": "Manage logrotate on your servers with Puppet",
   "license": "MIT",
   "source": "https://github.com/rodjek/puppet-logrotate",
   "project_page": "https://github.com/rodjek/puppet-logrotate",
   "issues_url": "https://github.com/rodjek/puppet-logrotate/issues",
-  "description": "Manage logrotate on your servers with Puppet",
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": ">= 3.2.0 < 5.0.0"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": ">= 3.0.0 < 5.0.0"
+    }
+  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian"
