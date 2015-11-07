@@ -14,7 +14,7 @@ describe 'logrotate::rule' do
 
     let(:params) { {:path => '/var/log/foo.log'} }
     it do
-      should contain_class('logrotate::base')
+      should contain_class('logrotate')
       should contain_file('/etc/logrotate.d/test').with({
         'owner'   => 'root',
         'group'   => 'root',
@@ -536,7 +536,7 @@ describe 'logrotate::rule' do
       it do
         expect {
           should contain_file('/etc/logrotate.d/test')
-        }.to raise_error(Puppet::Error, /maxage must be an integer/)
+        }.to raise_error(Puppet::Error, /validate_integer\(\)/)
       end
     end
 
@@ -775,7 +775,7 @@ describe 'logrotate::rule' do
       it do
         expect {
           should contain_file('/etc/logrotate.d/test')
-        }.to raise_error(Puppet::Error, /rotate must be an integer/)
+        }.to raise_error(Puppet::Error, /validate_integer\(\)/)
       end
     end
 
@@ -992,7 +992,7 @@ describe 'logrotate::rule' do
         it do
           expect {
             should contain_file('/etc/logrotate.d/test')
-          }.to raise_error(Puppet::Error, /shredcycles must be an integer/)
+          }.to raise_error(Puppet::Error, /validate_integer\(\)/)
         end
       end
     end
@@ -1041,7 +1041,7 @@ describe 'logrotate::rule' do
       it do
         expect {
           should contain_file('/etc/logrotate.d/test')
-        }.to raise_error(Puppet::Error, /start must be an integer/)
+        }.to raise_error(Puppet::Error, /validate_integer\(\)/)
       end
     end
 

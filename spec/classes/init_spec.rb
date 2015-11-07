@@ -1,6 +1,6 @@
 require 'spec_helper'
+describe 'logrotate' do
 
-describe 'logrotate::base' do
   it do
     should contain_package('logrotate').with_ensure('latest')
 
@@ -9,7 +9,7 @@ describe 'logrotate::base' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0444',
-      'source'  => 'puppet:///modules/logrotate/etc/logrotate.conf',
+      'source'  => 'puppet:///modules/logrotate/logrotate.conf',
       'require' => 'Package[logrotate]',
     })
 
@@ -26,7 +26,7 @@ describe 'logrotate::base' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0555',
-      'source'  => 'puppet:///modules/logrotate/etc/cron.daily/logrotate',
+      'source'  => 'puppet:///modules/logrotate/cron.daily/logrotate',
       'require' => 'Package[logrotate]',
     })
   end

@@ -2,8 +2,10 @@
 #
 # Examples
 #
-#   include logrotate::defaults::debian
+#   include ::logrotate::defaults::debian
+#
 class logrotate::defaults::debian {
+
   Logrotate::Rule {
     missingok    => true,
     rotate_every => 'month',
@@ -16,9 +18,11 @@ class logrotate::defaults::debian {
   logrotate::rule {
     'wtmp':
       path        => '/var/log/wtmp',
-      create_mode => '0664';
-    'btmp':
+      create_mode => '0664',
+  }
+
+  logrotate::rule { 'btmp':
       path        => '/var/log/btmp',
-      create_mode => '0600';
+      create_mode => '0600',
   }
 }

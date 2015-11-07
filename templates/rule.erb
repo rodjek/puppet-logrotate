@@ -13,7 +13,7 @@
   if scope.to_hash.has_key?('sane_create')
     if @sane_create == 'create'
       opts << [@sane_create, @create_mode, @create_owner, @create_group].reject { |r|
-        r == 'undef'
+        r == nil
       }.join(' ')
     else
       opts << @sane_create
@@ -23,7 +23,7 @@
   if scope.to_hash.has_key?('sane_su')
     if @sane_su == 'su'
       opts << [@sane_su, @su_owner, @su_group].reject { |r|
-        r == 'undef'
+        r == nil
       }.join(' ')
     end
   end
@@ -42,14 +42,14 @@
     'uncompresscmd'
   ].each do |key|
     value = scope.to_hash[key]
-    opts << "#{key} #{value}" if value != 'undef'
+    opts << "#{key} #{value}" if value != nil
   end
 -%>
 <%= rpath %> {
 <% opts.sort_by{|key,value| key}.each do |opt| -%>
   <%= opt %>
 <% end -%>
-<% if @postrotate != 'undef' -%>
+<% if @postrotate != nil -%>
   postrotate
   <%- @postrotate = [@postrotate] unless @postrotate.is_a?(Array) -%>
   <%- @postrotate.each do |val| -%>
@@ -57,7 +57,7 @@
   <%- end -%>
   endscript
 <% end -%>
-<% if @prerotate != 'undef' -%>
+<% if @prerotate != nil -%>
   prerotate
   <%- @prerotate = [@prerotate] unless @prerotate.is_a?(Array) -%>
   <%- @prerotate.each do |val| -%>
@@ -65,7 +65,7 @@
   <%- end -%>
   endscript
 <% end -%>
-<% if @firstaction != 'undef' -%>
+<% if @firstaction != nil -%>
   firstaction
   <%- @firstaction = [@firstaction] unless @firstaction.is_a?(Array) -%>
   <%- @firstaction.each do |val| -%>
@@ -73,7 +73,7 @@
   <%- end -%>
   endscript
 <% end -%>
-<% if @lastaction != 'undef' -%>
+<% if @lastaction != nil -%>
   lastaction
   <%- @lastaction = [@lastaction] unless @lastaction.is_a?(Array) -%>
   <%- @lastaction.each do |val| -%>
