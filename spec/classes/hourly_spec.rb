@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe 'logrotate::hourly' do
+  let (:facts){{
+    :osfamily => 'RedHat',
+    :operatingsystemmajrelease => 6,
+  }}
   context 'with default values' do
     it do
       should contain_file('/etc/logrotate.d/hourly').with({
@@ -17,7 +21,10 @@ describe 'logrotate::hourly' do
         'owner'   => 'root',
         'group'   => 'root',
         'mode'    => '0555',
-        'source'  => 'puppet:///modules/logrotate/etc/cron.hourly/logrotate',
+        'source'  => [
+          'puppet:///modules/logrotate/etc/cron.hourly/logrotate.RedHat.6',
+          'puppet:///modules/logrotate/etc/cron.hourly/logrotate',
+        ],
         'require' => [
           'File[/etc/logrotate.d/hourly]',
           'Package[logrotate]',

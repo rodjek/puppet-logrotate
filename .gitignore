@@ -1,3 +1,4 @@
 .bundle/
 vendor/gems/
+vendor/cache/
 .ruby-version
