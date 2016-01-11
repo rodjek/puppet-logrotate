@@ -3,7 +3,10 @@
 # Examples
 #
 #   include logrotate::base
-class logrotate::base {
+class logrotate::base (
+ $syslog_owner        = undef,
+ $syslog_group        = undef,
+) {
   package { 'logrotate':
     ensure => latest,
   }
@@ -18,7 +21,7 @@ class logrotate::base {
     '/etc/logrotate.conf':
       ensure  => file,
       mode    => '0444',
-      source  => 'puppet:///modules/logrotate/etc/logrotate.conf';
+      content => template('logrotate/etc/logrotate.conf.erb');
     '/etc/logrotate.d':
       ensure  => directory,
       mode    => '0755';
