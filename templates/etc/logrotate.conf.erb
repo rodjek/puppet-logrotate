@@ -1,6 +1,12 @@
 # THIS FILE IS AUTOMATICALLY DISTRIBUTED BY PUPPET.  ANY CHANGES WILL BE
 # OVERWRITTEN.
 
+# use the syslog group by default, since this is the owning group
+# # of /var/log/syslog.
+<% if @syslog_owner and @syslog_group -%>
+su <%= @syslog_owner %> <%= @syslog_group %>
+<% end -%>
+
 # Default values
 # rotate log files weekly
 weekly
@@ -13,3 +19,6 @@ create
 
 # packages drop log rotation information into this directory
 include /etc/logrotate.d
+
+
+/* vim: set ts=2 sts=2 sw=2 et : */
