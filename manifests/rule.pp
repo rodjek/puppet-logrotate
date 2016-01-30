@@ -46,8 +46,9 @@
 #                   (optional).
 # maxage          - The Integer maximum number of days that a rotated log file
 #                   can stay on the system (optional).
-# maxsize         - The String maximum size a log file can be before being rotated,
-#                   even before the additionally specified time interval (optional).
+# maxsize         - The String maximum size a log file can be before being
+#                   rotated, even before the additionally specified time
+#                   interval (optional).
 #                   The default units are bytes, append k, M or G for kilobytes,
 #                   megabytes and gigabytes respectively.
 # minsize         - The String minimum size a log file must be to be rotated,
