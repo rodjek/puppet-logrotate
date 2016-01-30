@@ -46,6 +46,10 @@
 #                   (optional).
 # maxage          - The Integer maximum number of days that a rotated log file
 #                   can stay on the system (optional).
+# maxsize         - The String maximum size a log file can be before being rotated,
+#                   even before the additionally specified time interval (optional).
+#                   The default units are bytes, append k, M or G for kilobytes,
+#                   megabytes and gigabytes respectively.
 # minsize         - The String minimum size a log file must be to be rotated,
 #                   but not before the scheduled rotation time (optional).
 #                   The default units are bytes, append k, M or G for kilobytes,
@@ -138,6 +142,7 @@ define logrotate::rule(
                         $mailfirst       = 'undef',
                         $maillast        = 'undef',
                         $maxage          = 'undef',
+                        $maxsize         = 'undef',
                         $minsize         = 'undef',
                         $missingok       = 'undef',
                         $olddir          = 'undef',
@@ -301,6 +306,14 @@ define logrotate::rule(
     /^\d+$/: {}
     default: {
       fail("Logrotate::Rule[${name}]: maxage must be an integer")
+    }
+  }
+
+  case $maxsize {
+    'undef': {}
+    /^\d+[kMG]?$/: {}
+    default: {
+      fail("Logrotate::Rule[${name}]: maxsize must match /\\d+[kMG]?/")
     }
   }
 
