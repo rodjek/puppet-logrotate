@@ -1,11 +1,44 @@
 #!/bin/sh
-# THIS FILE IS AUTOMATICALLY DISTRIBUTED BY PUPPET.  ANY CHANGES WILL BE
-# OVERWRITTEN.
 
-OUTPUT=$(/usr/sbin/logrotate /etc/logrotate.conf 2>&1)
-EXITVALUE=$?
+declare logfile="/var/log/logrotate.log"
+declare statefile="/var/lib/logrotate.status"
+declare configfile="/etc/logrotate.conf"
+
+function checkError()
+{
+    if [ -e $logfile ]; then
+        cat $logfile | grep error: | while read error; do
+            return=false
+            /usr/bin/logger -t logrotate "ALERT error in ${logfile}: ${error:7}"
+            case "${error:7:25}" in
+                "could not read state file")
+                    return=true
+                ;;
+            esac
+            echo $return
+        done
+    fi
+    echo false
+}
+
+removestate=$(checkError)
+removestate=${removestate:0:4}
+if [ "$removestate" == "true" ]; then
+    if [ -e $statefile ]; then
+        echo Removing $statefile
+        /usr/bin/logger -t logrotate "ALERT removing $statefile"
+        rm -f $statefile
+    fi
+    if [ -e $logfile ]; then
+        echo Removing $logfile
+        /usr/bin/logger -t logrotate "ALERT removing $logfile"
+        rm -f $logfile
+    fi
+fi
+
+/usr/sbin/logrotate $configfile -v |& tee --append $logfile
+EXITVALUE=${PIPESTATUS[0]}
 if [ $EXITVALUE != 0 ]; then
     /usr/bin/logger -t logrotate "ALERT exited abnormally with [$EXITVALUE]"
-    echo "${OUTPUT}"
 fi
 exit $EXITVALUE
