@@ -1,5 +1,11 @@
 # Logrotate module for Puppet
 
+This module is no longer under active maintenance please use the yo61 logrotate module
+
+GitHub: https://github.com/yo61/puppet-logrotate
+
+Forge : https://forge.puppetlabs.com/yo61/logrotate
+
 [![Build Status](https://secure.travis-ci.org/rodjek/puppet-logrotate.png)](http://travis-ci.org/rodjek/puppet-logrotate)
 
 A more Puppety way of managing logrotate configs.  Where possible, as many of
