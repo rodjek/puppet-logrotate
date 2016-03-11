@@ -26,7 +26,17 @@ class logrotate::base (
   }
 
   if !defined( Logrotate::Conf['/etc/logrotate.conf'] ) {
-    logrotate::conf {'/etc/logrotate.conf': }
+    if $::osfamily == Debian {
+      logrotate::conf {'/etc/logrotate.conf':
+        su       => true,
+        su_owner => 'root',
+        su_group => 'syslog',
+      }
+    }
+    else {
+      logrotate::conf {'/etc/logrotate.conf':
+      }
+    }
   }
 
   file {
