@@ -312,13 +312,7 @@ define logrotate::rule(
     }
   }
 
-  case $rotate {
-    'undef': {}
-    /^\d+$/: {}
-    default: {
-      fail("Logrotate::Rule[${name}]: rotate must be an integer")
-    }
-  }
+  validate_integer($rotate)
 
   case $size {
     'undef': {}
