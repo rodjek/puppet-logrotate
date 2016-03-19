@@ -312,13 +312,7 @@ define logrotate::rule(
     }
   }
 
-  case $rotate {
-    'undef': {}
-    /^\d+$/: {}
-    default: {
-      fail("Logrotate::Rule[${name}]: rotate must be an integer")
-    }
-  }
+  validate_integer($rotate)
 
   case $size {
     'undef': {}
@@ -423,8 +417,6 @@ define logrotate::rule(
 
   file { $rule_path:
     ensure  => $ensure,
-    owner   => 'root',
-    group   => 'root',
     mode    => '0444',
     content => template('logrotate/etc/logrotate.d/rule.erb'),
     require => Class['logrotate'],

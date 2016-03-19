@@ -1,5 +1,5 @@
 name 'b4ldr-logrotate'
-version '1.1.2'
+version '1.1.3'
 source 'https://github.com/b4ldr/puppet-logrotate'
 license 'MIT'
 summary 'Logrotate module'

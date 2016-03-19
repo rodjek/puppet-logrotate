@@ -270,7 +270,10 @@ define logrotate::conf (
 
   if ($su_user != 'undef') and ($su_group == 'undef') {
     $_su_user  = $_su_user
-    $_su_group = 'root'
+    $_su_group = $::kernel ? {
+      default   => 'root',
+      'FreeBSD' => 'wheel',
+    }
   } elsif ($su_user == 'undef') and ($su_group != 'undef') {
     $_su_user  = 'root'
     $_su_group = $su_group
