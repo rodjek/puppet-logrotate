@@ -4,7 +4,7 @@ describe 'logrotate::defaults::debian' do
   it do
     should contain_logrotate__rule('wtmp').with({
       'rotate_every' => 'month',
-      'rotate'       => '1',
+      'rotate'       => 1,
       'create'       => true,
       'create_mode'  => '0664',
       'create_owner' => 'root',
@@ -14,7 +14,7 @@ describe 'logrotate::defaults::debian' do
 
     should contain_logrotate__rule('btmp').with({
       'rotate_every' => 'month',
-      'rotate'       => '1',
+      'rotate'       => 1,
       'create'       => true,
       'create_mode'  => '0600',
       'create_owner' => 'root',
