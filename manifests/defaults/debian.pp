@@ -21,4 +21,10 @@ class logrotate::defaults::debian {
       path        => '/var/log/btmp',
       create_mode => '0600';
   }
+
+  file { '/etc/logrotate.d/rsyslog':
+    ensure => file,
+    mode   => '0644',
+    source => 'puppet:///modules/logrotate/etc/logrotate.d/rsyslog';
+  }
 }
