@@ -5,7 +5,7 @@
 #   include logrotate::base
 class logrotate::base {
   package { 'logrotate':
-    ensure => latest,
+    ensure => installed,
   }
 
   File {
