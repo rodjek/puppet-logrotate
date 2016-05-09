@@ -25,6 +25,6 @@ class logrotate::defaults::debian {
   file { '/etc/logrotate.d/rsyslog':
     ensure => file,
     mode   => '0644',
-    source => 'puppet:///modules/logrotate/etc/logrotate.d/rsyslog';
+    source => 'puppet:///modules/logrotate/etc/logrotate.d/rsyslog',
   }
 }
