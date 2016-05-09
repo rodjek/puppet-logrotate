@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'logrotate::base' do
   it do
-    should contain_package('logrotate').with_ensure('latest')
+    should contain_package('logrotate').with_ensure('installed')
 
     should contain_file('/etc/logrotate.conf').with({
       'ensure'  => 'file',
