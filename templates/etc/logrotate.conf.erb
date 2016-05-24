@@ -15,6 +15,14 @@ create
 compress
 <%- end -%>
 
+<% if @compresscmd -%>
+compresscmd <%= @compresscmd %>
+<%- end -%>
+
+<% if @compressext -%>
+compressext <%= @compressext %>
+<%- end -%>
+
 <% if @dateext -%>
 # use date as a suffix of the rotated file
 dateext
