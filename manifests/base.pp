@@ -4,6 +4,8 @@
 #
 #   include logrotate::base
 class logrotate::base (
+  $compresscmd   = undef,
+  $compressext   = undef,
   $dateext       = false,
   $package_state = 'present',
   $rotate        = 4
