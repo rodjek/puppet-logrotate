@@ -1,0 +1,33 @@
+# THIS FILE IS AUTOMATICALLY DISTRIBUTED BY PUPPET.  ANY CHANGES WILL BE
+# OVERWRITTEN.
+
+# Default values
+# rotate log files weekly
+weekly
+
+# keep X weeks worth of backlogs
+rotate <%= @rotate %>
+
+# create new (empty) log files after rotating old ones
+create
+
+<% if @compress -%>
+compress
+<%- end -%>
+
+<% if @compresscmd -%>
+compresscmd <%= @compresscmd %>
+<%- end -%>
+
+<% if @compressext -%>
+compressext <%= @compressext %>
+<%- end -%>
+
+<% if @dateext -%>
+# use date as a suffix of the rotated file
+dateext
+<%- end -%>
+
+
+# packages drop log rotation information into this directory
+include /etc/logrotate.d
