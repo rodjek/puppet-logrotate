@@ -4,6 +4,7 @@
 #
 #   include logrotate::base
 class logrotate::base (
+  $compress      = true,
   $compresscmd   = undef,
   $compressext   = undef,
   $dateext       = false,
