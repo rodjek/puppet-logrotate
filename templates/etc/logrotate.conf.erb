@@ -11,5 +11,10 @@ rotate 4
 # create new (empty) log files after rotating old ones
 create
 
+<% if defined? @su_config %>
+# su config currently only configured for Debian
+<%= @su_config %>
+<% end %>
+
 # packages drop log rotation information into this directory
 include /etc/logrotate.d
