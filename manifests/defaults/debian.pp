@@ -22,9 +22,24 @@ class logrotate::defaults::debian {
       create_mode => '0600';
   }
 
+  case $::lsbdistrelease {
+    '12.04': {
+      $rsyslog_command = 'service rsyslog reload'
+    }
+    '14.04': {
+      $rsyslog_command = 'service rsyslog restart'
+    }
+    '16.04': {
+      $rsyslog_command = 'systemctl restart rsyslog'
+    }
+    default: {
+      $rsyslog_command = 'service rsyslog restart'
+    }
+  }
+
   file { '/etc/logrotate.d/rsyslog':
-    ensure => file,
-    mode   => '0644',
-    source => 'puppet:///modules/logrotate/etc/logrotate.d/rsyslog',
+    ensure  => file,
+    mode    => '0644',
+    content => template('logrotate/etc/logrotate.d/rsyslog'),
   }
 }

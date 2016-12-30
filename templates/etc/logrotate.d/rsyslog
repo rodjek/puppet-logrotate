@@ -8,7 +8,7 @@
 	compress
   create 640 syslog adm
 	postrotate
-		service rsyslog restart >/dev/null 2>&1 || true
+		<%= @rsyslog_command %> >/dev/null 2>&1 || true
 	endscript
 }
 
@@ -33,6 +33,6 @@
 	delaycompress
 	sharedscripts
 	postrotate
-		service rsyslog restart >/dev/null 2>&1 || true
+		<%= @rsyslog_command %> >/dev/null 2>&1 || true
 	endscript
 }
