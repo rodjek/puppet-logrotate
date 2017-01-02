@@ -7,6 +7,7 @@
 	delaycompress
 	compress
   create 640 syslog adm
+	su root syslog
 	postrotate
 		<%= @rsyslog_command %> >/dev/null 2>&1 || true
 	endscript
@@ -32,6 +33,7 @@
 	compress
 	delaycompress
 	sharedscripts
+	su root syslog
 	postrotate
 		<%= @rsyslog_command %> >/dev/null 2>&1 || true
 	endscript
