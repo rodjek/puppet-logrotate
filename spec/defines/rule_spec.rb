@@ -541,6 +541,64 @@ describe 'logrotate::rule' do
     end
 
     ###########################################################################
+    # MAXSIZE
+    context 'and maxsize => 100' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :maxsize => 100}
+      }
+
+      it do
+        should contain_file('/etc/logrotate.d/test') \
+          .with_content(/^  maxsize 100$/)
+      end
+    end
+
+    context 'and maxsize => 100k' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :maxsize => '100k'}
+      }
+
+      it do
+        should contain_file('/etc/logrotate.d/test') \
+          .with_content(/^  maxsize 100k$/)
+      end
+    end
+
+    context 'and maxsize => 100M' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :maxsize => '100M'}
+      }
+
+      it do
+        should contain_file('/etc/logrotate.d/test') \
+          .with_content(/^  maxsize 100M$/)
+      end
+    end
+
+    context 'and maxsize => 100G' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :maxsize => '100G'}
+      }
+
+      it do
+        should contain_file('/etc/logrotate.d/test') \
+          .with_content(/^  maxsize 100G$/)
+      end
+    end
+
+    context 'and maxsize => foo' do
+      let(:params) {
+        {:path => '/var/log/foo.log', :maxsize => 'foo'}
+      }
+
+      it do
+        expect {
+          should contain_file('/etc/logrotate.d/test')
+        }.to raise_error(Puppet::Error, /maxsize must match/)
+      end
+    end
+
+    ###########################################################################
     # MINSIZE
     context 'and minsize => 100' do
       let(:params) {
